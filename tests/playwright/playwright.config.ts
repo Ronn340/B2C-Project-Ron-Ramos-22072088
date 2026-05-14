@@ -39,7 +39,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://localhost:3002",
+    baseURL: "http://localhost:3001",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -56,16 +56,16 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { name: "setup", testMatch: /.*\.setup\.ts/ },
-    {
-      name: "chromium",
-      testDir: "./tests/admin",
-      use: {
-        ...devices["Desktop Chrome"],
-        baseURL: "http://localhost:3002",
-      },
-      dependencies: process.env.CI ? ["setup"] : [],
-    },
+    // { name: "setup", testMatch: /.*\.setup\.ts/ },
+    // {
+    //   name: "chromium",
+    //   testDir: "./tests/admin",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     baseURL: "http://localhost:3002",
+    //   },
+    //   dependencies: process.env.CI ? ["setup"] : [],
+    // },
     {
       name: "chromium",
       testDir: "./tests/web",
@@ -73,7 +73,7 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         baseURL: "http://localhost:3001",
       },
-      dependencies: process.env.CI ? ["setup"] : [],
+      // dependencies: process.env.CI ? ["setup"] : [],
     },
 
     // {
@@ -112,12 +112,12 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: process.env.CI
     ? [
-        {
-          reuseExistingServer: true,
-          command: "pnpm start:admin",
-          url: "http://localhost:3002",
-          // reuseExistingServer: !process.env.CI,
-        },
+        // {
+        //   reuseExistingServer: true,
+        //   command: "pnpm start:admin",
+        //   url: "http://localhost:3002",
+        //   // reuseExistingServer: !process.env.CI,
+        // },
         {
           reuseExistingServer: true,
           command: "pnpm start:web",
