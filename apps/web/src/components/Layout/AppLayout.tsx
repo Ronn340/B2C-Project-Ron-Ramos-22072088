@@ -20,7 +20,7 @@ export async function AppLayout({
   return (
     <div className="flex h-screen overflow-hidden">
       <div className="w-80 shrink-0 border-r scroll overflow-y-auto">
-        <LeftMenu selectedCategory={selectedCategory} selectedYear={selectedYear} selectedMonth={selectedMonth} selectedTag={selectedTag} />
+        <LeftMenu />
       </div>
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopMenu query={query} />
