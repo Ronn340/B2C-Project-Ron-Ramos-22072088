@@ -1,22 +1,22 @@
 name: B2C App CI
 
 on: 
-  -push
-  -workflow_dispatch
-permisions:
+  - push
+  - workflow_dispatch
+
+permissions:
   checks: write
   actions: read
   contents: read
 
 jobs:
   build-and-test:
-  env:
-    E2E: true
-    CI: true
-    DATABASE_URL: file:./dev.db
-    JWT_SECRET: secret
-
     runs-on: ubuntu-latest
+    env:
+      E2E: true
+      CI: true
+      DATABASE_URL: file:./dev.db
+      JWT_SECRET: secret
     steps:
       - uses: pnpm/action-setup@v3
         with:
