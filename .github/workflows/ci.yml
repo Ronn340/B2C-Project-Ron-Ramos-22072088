@@ -39,7 +39,7 @@ jobs:
       - name: Push Database 📦
         run: pnpm --filter @repo/db db:push
       - name: Build the project 🏗
-        run: pnpm turbo build
+        run: pnpm turbo build --filter=@repo/web
       
       - name: Run tests
         working-directory: tests/playwright
