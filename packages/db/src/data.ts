@@ -1,106 +1,149 @@
-export type Post = {
+export type Product = {
   id: number;
   urlId: string;
-  title: string;
-  content: string;
-  description: string;
+
+  name: string;
+  articleType : string;
+  sizes : string;
+  rating: number;
   imageUrl: string;
-  date: Date;
-  category: string;
-  views: number;
-  likes: number;
-  tags: string;
+  description: string;
+  colour : string;
+
+  price: number;
+  stock: number;
+
   active: boolean;
+  createdAt: Date;
 };
 
-const content = `
-  # Title 1
 
-  Illo **sint voluptas**. Error voluptates culpa eligendi. 
-  Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-  Sed exercitationem placeat consectetur nulla deserunt vel 
-  iusto corrupti dicta laboris incididunt.
+/* Prefilling of the hardcoded data is AI generated for demonstration purposes */
+/*
+ 1 inactive                           - for admin
+ 2 same product but different colour  - colour swatching *optimistic finish of project IGNORE IF NO TIME*
+ 3 out of stocks                      - for displaying proper disabled state
+ */
 
-  ## Subtitle 1
-
-  Illo sint *voluptas*. Error voluptates culpa eligendi. 
-  Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-  Sed exercitationem placeat consectetur nulla deserunt vel 
-  iusto corrupti dicta laboris incididunt.
-`;
-
-const description = `Illo sint voluptas. Error voluptates culpa eligendi. 
-Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-Sed exercitationem placeat consectetur nulla deserunt vel 
-iusto corrupti dicta laboris incididunt.`;
-
-export const posts: Post[] = [
+export const products: Product[] = [
   {
     id: 1,
-    title: "Boost your conversion rate",
-    urlId: "boost-your-conversion-rate",
-    description,
-    content: content + " ... post1",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&auto=format&fit=crop&w=3603&q=80",
-    date: new Date("Apr 18, 2022"),
-    category: "Node",
-    tags: "Back-End,Databases",
-    views: 320,
-    likes: 3,
+    urlId: "fleece-jacket-black",
+    name: "Fluffy Fleece Jacket",
+    articleType: "Jacket",
+    sizes: "XS,S,M,L,XL",
+    rating: 4.7,
+    imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop",
+    description: "A warm, lightweight fleece jacket perfect for layering. Soft brushed interior with a relaxed fit and zip-up front.",
+    colour: "Black",
+    price: 59.90,
+    stock: 34,
     active: true,
+    createdAt: new Date("2024-01-10"),
   },
   {
     id: 2,
-    title: "Better front ends with Fatboy Slim",
-    urlId: "better-front-ends-with-fatboy-slim",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post2",
-    imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661342428515-5ca8cee4385a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3",
-    date: new Date("Mar 16, 2020"),
-    category: "React",
-    tags: "Front-End,Optimisation",
-    views: 10,
-    likes: 1,
+    urlId: "fleece-jacket-navy",
+    name: "Fluffy Fleece Jacket",
+    articleType: "Jacket",
+    sizes: "XS,S,M,L,XL",
+    rating: 4.7,
+    imageUrl: "https://images.unsplash.com/photo-1604644401890-0bd678c83788?w=800&auto=format&fit=crop",
+    description: "A warm, lightweight fleece jacket perfect for layering. Soft brushed interior with a relaxed fit and zip-up front.",
+    colour: "Navy",
+    price: 59.90,
+    stock: 21,
     active: true,
+    createdAt: new Date("2024-01-10"),
   },
   {
     id: 3,
-    title: "No front end framework is the best",
-    urlId: "no-front-end-framework-is-the-best",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post3",
-    imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661517706036-a48d5fc8f2f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    date: new Date("Dec 16, 2024"),
-    category: "React",
-    tags: "Front-End,Dev Tools",
-    views: 22,
-    likes: 2,
+    urlId: "slim-chino-pants-beige",
+    name: "Slim Chino Pants",
+    articleType: "Pants",
+    sizes: "28,30,32,34,36",
+    rating: 4.5,
+    imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop",
+    description: "Clean, tapered chino pants with a slim fit through the thigh. Stretch fabric for all-day comfort.",
+    colour: "Beige",
+    price: 49.90,
+    stock: 18,
     active: true,
+    createdAt: new Date("2024-02-01"),
   },
   {
     id: 4,
-    title: "Visual Basic is the future",
-    urlId: "visual-basic-is-the-future",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post4",
-    imageUrl: "https://m.media-amazon.com/images/I/51NqEfmmBTL.jpg",
-    date: new Date("Dec 16, 2012"),
-    category: "React",
-    tags: "Programming,Mainframes",
-    views: 22,
-    likes: 1,
+    urlId: "slim-chino-pants-olive",
+    name: "Slim Chino Pants",
+    articleType: "Pants",
+    sizes: "28,30,32,34,36",
+    rating: 4.5,
+    imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop",
+    description: "Clean, tapered chino pants with a slim fit through the thigh. Stretch fabric for all-day comfort.",
+    colour: "Olive",
+    price: 49.90,
+    stock: 0,
+    active: true,
+    createdAt: new Date("2024-02-01"),
+  },
+  {
+    id: 5,
+    urlId: "oversized-cotton-tee-white",
+    name: "Oversized Cotton T-Shirt",
+    articleType: "T-Shirt",
+    sizes: "XS,S,M,L,XL,XXL",
+    rating: 4.3,
+    imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop",
+    description: "100% cotton oversized tee with a dropped shoulder and boxy silhouette. Garment-washed for a lived-in feel.",
+    colour: "White",
+    price: 29.90,
+    stock: 60,
+    active: true,
+    createdAt: new Date("2024-03-05"),
+  },
+  {
+    id: 6,
+    urlId: "oversized-cotton-tee-black",
+    name: "Oversized Cotton T-Shirt",
+    articleType: "T-Shirt",
+    sizes: "XS,S,M,L,XL,XXL",
+    rating: 4.3,
+    imageUrl: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800&auto=format&fit=crop",
+    description: "100% cotton oversized tee with a dropped shoulder and boxy silhouette. Garment-washed for a lived-in feel.",
+    colour: "Black",
+    price: 29.90,
+    stock: 45,
+    active: true,
+    createdAt: new Date("2024-03-05"),
+  },
+  {
+    id: 7,
+    urlId: "puffer-vest-grey",
+    name: "Lightweight Puffer Vest",
+    articleType: "Vest",
+    sizes: "S,M,L,XL",
+    rating: 4.6,
+    imageUrl: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&auto=format&fit=crop",
+    description: "Packable puffer vest with heat-retaining fill and a water-resistant shell. Great as a mid-layer or on its own.",
+    colour: "Grey",
+    price: 69.90,
+    stock: 12,
+    active: true,
+    createdAt: new Date("2024-04-01"),
+  },
+  {
+    id: 8,
+    urlId: "ribbed-knit-sweater-camel",
+    name: "Ribbed Knit Sweater",
+    articleType: "Sweater",
+    sizes: "XS,S,M,L,XL",
+    rating: 4.8,
+    imageUrl: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop",
+    description: "Soft ribbed knit sweater with a crew neck and relaxed fit. Blended wool fabric keeps you warm without bulk.",
+    colour: "Camel",
+    price: 79.90,
+    stock: 0,
     active: false,
-  }
+    createdAt: new Date("2023-11-15"),
+  },
 ];
