@@ -1,5 +1,5 @@
 import type { Product } from "@repo/db/data";
-import BlogList from "./Blog/List";
+import ProductList from "./Blog/List";
 
 export function Main({
   products,
@@ -10,7 +10,7 @@ export function Main({
 }) {
   return (
     <main className={className}>
-      <BlogList products={products} />
+      <ProductList products={products} />
     </main>
   );
 }

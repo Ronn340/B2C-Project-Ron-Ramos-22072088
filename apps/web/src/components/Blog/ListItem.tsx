@@ -1,7 +1,7 @@
 import type { Product } from "@repo/db/data";
 import Link from "next/link";
 
-export function BlogListItem({ product }: { product: Product }) {
+export function ProductListItem({ product }: { product: Product }) {
 
   const formattedPrice = product.price.toLocaleString("en-AU", {
     style: "currency",
@@ -78,4 +78,4 @@ export function BlogListItem({ product }: { product: Product }) {
   */
 }
 
-export default BlogListItem;
+export default ProductListItem;
