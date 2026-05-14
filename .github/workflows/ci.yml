@@ -17,6 +17,7 @@ jobs:
       CI: true
       DATABASE_URL: file:./dev.db
       JWT_SECRET: secret
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       COURSE_ID: full-stack-development-comp3036-2026
 
     steps:
