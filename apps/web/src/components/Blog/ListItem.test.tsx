@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import { post1 } from "./List.test";
-import { BlogListItem } from "./ListItem";
+import { ProductListItem } from "./ListItem";
 
 test("render blog post data", async () => {
-  const { getByText } = render(<BlogListItem post={post1} />);
+  const { getByText } = render(<ProductListItem post={post1} />);
 
   await expect.element(getByText("Hello, World")).toBeVisible();
   await expect

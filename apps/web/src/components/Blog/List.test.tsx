@@ -1,7 +1,7 @@
 import type { Post } from "@repo/db/data";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { BlogList } from "./List";
+import { ProductList } from "./List";
 
 export const post1: Post = {
   title: "Hello, World!",
@@ -34,12 +34,12 @@ export const post2: Post = {
 };
 
 test("renders 0 posts when no posts are present", async () => {
-  const { getByText } = render(<BlogList posts={[]} />);
+  const { getByText } = render(<ProductList posts={[]} />);
   await expect.element(getByText("0 Posts")).toBeInTheDocument();
 });
 
 test("renders all posts", async () => {
-  const component = render(<BlogList posts={[post1, post2]} />);
+  const component = render(<ProductList posts={[post1, post2]} />);
 
   await expect(
     component.baseElement.getElementsByTagName("article"),
