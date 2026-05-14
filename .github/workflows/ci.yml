@@ -1,0 +1,46 @@
+name: B2C App CI
+
+on: 
+  -push
+  -workflow_dispatch
+permisions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build-and-test:
+  env:
+    E2E: true
+    CI: true
+    DATABASE_URL: file:./dev.db
+    JWT_SECRET: secret
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install PNPM 📦
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.2.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install dependencies 🧪
+        run: pnpm install
+      - name: Install Playwright Browsers
+        working-directory: tests/playwright
+        run: pnpm playwright install chromium --with-deps
+      - name: Push Database 📦
+        run: pnpm --filter @repo/db db:push
+      - name: Build the project 🏗
+        run: pnpm turbo build
+      
+      - name: Run tests
+        working-directory: tests/playwright
+        run: pnpm playwright test
