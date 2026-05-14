@@ -17,6 +17,8 @@ jobs:
       CI: true
       DATABASE_URL: file:./dev.db
       JWT_SECRET: secret
+      COURSE_ID: full-stack-development-comp3036-2026
+
     steps:
       - uses: pnpm/action-setup@v3
         with:
