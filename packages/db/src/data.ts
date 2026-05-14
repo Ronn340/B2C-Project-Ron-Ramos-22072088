@@ -23,6 +23,7 @@ export type Product = {
  1 inactive                           - for admin
  2 same product but different colour  - colour swatching *optimistic finish of project IGNORE IF NO TIME*
  3 out of stocks                      - for displaying proper disabled state
+ 1 BIG price                          - format it (thousands separator and 2dp)
  */
 
 export const products: Product[] = [
@@ -36,7 +37,7 @@ export const products: Product[] = [
     imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop",
     description: "A warm, lightweight fleece jacket perfect for layering. Soft brushed interior with a relaxed fit and zip-up front.",
     colour: "Black",
-    price: 59.90,
+    price: 99999.90,
     stock: 34,
     active: true,
     createdAt: new Date("2024-01-10"),
