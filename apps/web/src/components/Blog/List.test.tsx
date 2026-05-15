@@ -1,52 +1,51 @@
-// import type { Post } from "@repo/db/data";
-// import { expect, test } from "vitest";
-// import { render } from "vitest-browser-react";
-// import { ProductList } from "./List";
+import type { Product } from "@repo/db/data";
+import { expect, test } from "vitest";
+import { render } from "vitest-browser-react";
+import { ProductList } from "./List";
 
-// export const post1: Post = {
-//   title: "Hello, World!",
-//   date: new Date("01 Oct 2024"),
-//   tags: "Hello,World",
-//   category: "Cat",
-//   content: "Content of Hello World",
-//   description: "Description of Hello World",
-//   id: 1,
-//   imageUrl: "https://example.com/image.jpg",
-//   likes: 30,
-//   active: true,
-//   urlId: "hello-world",
-//   views: 200,
-// };
+export const product_1: Product = {
+    id: 1,
+    urlId: "classic-tee",
+    name: "Classic Tee",
+    articleType: "T-Shirt",
+    sizes: "S,M,L",
+    rating: 4.5,
+    imageUrl: "/img/tee.jpg",
+    description: "A classic t-shirt for everyday wear.",
+    colour: "White",
+    price: 49.99,
+    stock: 5,
+    active: true,
+    createdAt: new Date("2024-10-01T00:00:00Z"),
+};
 
-// export const post2: Post = {
-//   title: "Hola, Mundo!",
-//   date: new Date("01 May 2022"),
-//   tags: "Hola,Mundo",
-//   category: "Kat",
-//   content: "Contento del Hola Mundo",
-//   description: "Descripcion de Hola Mundo",
-//   id: 2,
-//   imageUrl: "https://example.com/image.jpg",
-//   likes: 550,
-//   active: true,
-//   urlId: "hola-mundo",
-//   views: 1000,
-// };
+export const product_2: Product = {
+    id: 2,
+    urlId: "vintage-hoodie",
+    name: "Vintage Hoodie",
+    articleType: "Hoodie",
+    sizes: "M,L,XL",
+    rating: 4.8,
+    imageUrl: "/img/hoodie.jpg",
+    description: "A vintage hoodie for a retro look.",
+    colour: "Black",
+    price: 79.99,
+    stock: 0,
+    active: true,
+    createdAt: new Date("2024-09-15T00:00:00Z"),
+};
 
-// test("renders 0 posts when no posts are present", async () => {
-//   const { getByText } = render(<ProductList posts={[]} />);
-//   await expect.element(getByText("0 Posts")).toBeInTheDocument();
-// });
+test("renders 0 products when no products are present", async () => {
+    const { getByText } = render(<ProductList products={[]} />);
+    await expect.element(getByText("0 Products")).toBeInTheDocument();
+});
 
-// test("renders all posts", async () => {
-//   const component = render(<ProductList posts={[post1, post2]} />);
+test("renders all products", async () => {
+    const component = render(<ProductList products={[product_1, product_2]} />);
 
-//   await expect(
-//     component.baseElement.getElementsByTagName("article"),
-//   ).toHaveLength(2);
-//   await expect.element(component.getByText("Hello World")).toBeInTheDocument();
-//   await expect.element(component.getByText("Hola Mundo")).toBeInTheDocument();
-// });
-
-import { test } from "vitest";
-test("placeholder", () => {});
+    await expect(
+        component.baseElement.getElementsByTagName("article"),
+    ).toHaveLength(2);
+    await expect.element(component.getByText("Classic Tee")).toBeInTheDocument();
+    await expect.element(component.getByText("Vintage Hoodie")).toBeInTheDocument();
+});
