@@ -7,7 +7,7 @@ const ThemeSwitch = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <Button onClick={toggleTheme} className=" text-secondary hover:text-secondaryHover">
+    <Button onClick={toggleTheme} className=" text-[#F5E8D8] transition-colors">
       {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
     </Button>
   );

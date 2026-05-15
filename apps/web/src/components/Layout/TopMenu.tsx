@@ -26,7 +26,8 @@ export function TopMenu({ query }: { query?: string }) {
   //       make sure you are able to explain what the handleSearch is doing and what debounce does
 
   return (
-    <div className="flex items-center px-12 py-8 border-b border-gray-200 gap-10">
+    <div className="flex items-center px-12 bg-[#0D0D0D] py-4  gap-10">
+      <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10"/>
       <form
       onSubmit={(e) => {
         e.preventDefault();
@@ -35,18 +36,18 @@ export function TopMenu({ query }: { query?: string }) {
         }
       } //Prevent user enter from going back to blank search -R
       
-       method="GET" className="flex items-center gap-2 border rounded-full border-gray-300 px-4 py-1 hover:border-wsu focus-within:border-wsu w-full ">
-        <span ><Search className="text-secondary"/></span>
+       method="GET" className="flex items-center gap-2 border border-secondary px-4 py-1 hover:border-wsu focus-within:border-wsu w-1/3">
+        <span ><Search className="text-gray-500"/></span>
         <input 
           type="text" 
           placeholder="Search..." 
           onChange={handleSearch} 
-          className="w-full focus:outline-none text-secondary"
+          className="w-full focus:outline-none text-secondary transition-colors"
           defaultValue={query || ""}
         />
       </form>
 
-      <div className="flex ml-auto items-center gap-4 border rounded-full border-gray-300 rounded px-5 py-1 hover:bg-gray-200 hover:text-wsu">
+      <div className="flex ml-auto items-center gap-4 border rounded-full border-none rounded px-5 py-1 hover:bg-wsu transition-colors">
         <ThemeSwitch/>
       </div>
     </div>
