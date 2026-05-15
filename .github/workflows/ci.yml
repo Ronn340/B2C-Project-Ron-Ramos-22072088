@@ -44,7 +44,18 @@ jobs:
       - name: Build the project 🏗
         run: pnpm turbo build --filter=@repo/web
       
-      - name: Run tests
+      - name: Test - Web Components
+        id: testUtils
+        uses: WesternSydneyUniversity/autograding-command-grader@v2
+        continue-on-error: true
+        with:
+          working-directory: apps/web
+          test-name: "Web Component Tests"
+          command: pnpm test
+          timeout: 10
+          max-score: 1
+
+      - name: Run E2E tests
         id: test
         uses: WesternSydneyUniversity/autograding-command-grader@v2
         continue-on-error: true
