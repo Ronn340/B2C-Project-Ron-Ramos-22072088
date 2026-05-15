@@ -20,7 +20,7 @@ html[data-theme="dark"] {
   --foreground: #FF6F61;
   --text: #F5E8D8;
   --textHover: theme("colors.gray.300");
-  --text-secondary: theme("colors.gray.400");
+  --text-secondary: theme("colors.gray.600");
   --text-secondaryHover: theme("colors.gray.500");
 }
 
