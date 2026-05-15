@@ -4,6 +4,7 @@ export type Product = {
 
   name: string;
   articleType : string;
+  gender: string;
   sizes : string;
   rating: number;
   imageUrl: string;
@@ -32,6 +33,7 @@ export const products: Product[] = [
     urlId: "fleece-jacket-black",
     name: "Fluffy Fleece Jacket",
     articleType: "Jacket",
+    gender: "Women",
     sizes: "XS,S,M,L,XL",
     rating: 4.7,
     imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop",
@@ -47,6 +49,7 @@ export const products: Product[] = [
     urlId: "fleece-jacket-navy",
     name: "Fluffy Fleece Jacket",
     articleType: "Jacket",
+    gender: "Women",
     sizes: "XS,S,M,L,XL",
     rating: 4.7,
     imageUrl: "https://images.unsplash.com/photo-1604644401890-0bd678c83788?w=800&auto=format&fit=crop",
@@ -62,6 +65,7 @@ export const products: Product[] = [
     urlId: "slim-chino-pants-beige",
     name: "Slim Chino Pants",
     articleType: "Pants",
+    gender: "Men",
     sizes: "28,30,32,34,36",
     rating: 4.5,
     imageUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop",
@@ -77,6 +81,7 @@ export const products: Product[] = [
     urlId: "slim-chino-pants-olive",
     name: "Slim Chino Pants",
     articleType: "Pants",
+    gender: "Men",
     sizes: "28,30,32,34,36",
     rating: 4.5,
     imageUrl: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop",
@@ -92,6 +97,7 @@ export const products: Product[] = [
     urlId: "oversized-cotton-tee-white",
     name: "Oversized Cotton T-Shirt",
     articleType: "T-Shirt",
+    gender: "Men",
     sizes: "XS,S,M,L,XL,XXL",
     rating: 4.3,
     imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop",
@@ -107,6 +113,7 @@ export const products: Product[] = [
     urlId: "oversized-cotton-tee-black",
     name: "Oversized Cotton T-Shirt",
     articleType: "T-Shirt",
+    gender: "Unisex",
     sizes: "XS,S,M,L,XL,XXL",
     rating: 4.3,
     imageUrl: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800&auto=format&fit=crop",
@@ -122,6 +129,7 @@ export const products: Product[] = [
     urlId: "puffer-vest-grey",
     name: "Lightweight Puffer Vest",
     articleType: "Vest",
+    gender: "Unisex",
     sizes: "S,M,L,XL",
     rating: 4.6,
     imageUrl: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&auto=format&fit=crop",
@@ -137,6 +145,7 @@ export const products: Product[] = [
     urlId: "ribbed-knit-sweater-camel",
     name: "Ribbed Knit Sweater",
     articleType: "Sweater",
+    gender: "Unisex",
     sizes: "XS,S,M,L,XL",
     rating: 4.8,
     imageUrl: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop",

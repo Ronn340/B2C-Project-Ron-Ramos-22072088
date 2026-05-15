@@ -36,7 +36,7 @@ export function ProductListItem({ product }: { product: Product }) {
         {/* Details */}
         <div className="flex flex-col gap-2 p-4">
           <span className="text-xs text-gray-400 uppercase tracking-wide">
-            {product.articleType}
+            {product.articleType} | {product.gender}
           </span>
 
 

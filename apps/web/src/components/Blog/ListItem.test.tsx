@@ -8,6 +8,8 @@ test("render product data summary", async () => {
 
   await expect.element(getByText("Classic Tee"))
   await expect.element(getByRole("link")).toHaveAttribute("href", "/product/classic-tee");
+  await expect.element(getByText("T-Shirt")).toBeVisible();
+  await expect.element(getByText("Men")).toBeVisible();
   await expect.element(getByTestId("size-S")).toBeVisible();
   await expect.element(getByTestId("size-M")).toBeVisible();
   await expect.element(getByTestId("size-L")).toBeVisible();    
