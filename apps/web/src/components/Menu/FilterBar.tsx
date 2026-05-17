@@ -12,7 +12,6 @@ export function FilterBar() {
 
   function handleOnChange(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
-
     if (value === "all" || value === "none") {
       params.delete(key);
     } else {

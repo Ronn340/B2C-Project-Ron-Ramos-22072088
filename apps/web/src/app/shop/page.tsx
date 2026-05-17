@@ -5,17 +5,19 @@ export default async function Page({ searchParams }: {
     searchParams:
     {
         gender?: string;
+        urlId?: string;
         type?: string;
         sort?: string
     }
 }) {
-    const { gender, type, sort } = searchParams;
+    const { gender, urlId, type, sort } = searchParams;
 
     const products = await client.db.product.findMany({
         where: {
             active: true,
             gender: gender ? gender : undefined,
-            articleType: type ? type : undefined
+            articleType: type ? type : undefined,
+            urlId: urlId ? { contains: urlId } : undefined
         },
         orderBy: 
             sort === "Best Reviews" ? { rating: "desc" } :
