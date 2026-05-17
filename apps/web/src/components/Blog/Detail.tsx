@@ -8,7 +8,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
   const sizes = product.sizes.split(",");
 
-  return <div className="grid grid-cols-2 gap-4 mt-8">
+  return <div className="grid grid-cols-2 gap-4 mt-8" data-test-id={`product-${product.id}`}>
     {/* Grid Laout - 50/50 image<->info */}
     <div className="flex flex-row relative gap-4 justify-center">
       <div className="relative w-1/2">
@@ -42,6 +42,7 @@ export function ProductDetail({ product }: { product: Product }) {
           <button
             key={size}
             onClick={() => setSelectedSize(size)}
+            data-test-id={`size-button-${size}`}
             className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
           >
             {size}
@@ -54,6 +55,7 @@ export function ProductDetail({ product }: { product: Product }) {
       </div>
       <button
         disabled={!selectedSize || product.stock === 0}
+        data-test-id="add-to-cart-button"
         className={`${!selectedSize || product.stock === 0 ?
           'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
           'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
