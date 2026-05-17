@@ -16,6 +16,7 @@ export type Product = {
 
   active: boolean;
   createdAt: Date;
+  images: ProductImage[];
 };
 
 
@@ -35,14 +36,15 @@ export const products: Product[] = [
     articleType: "Jacket",
     gender: "Women",
     sizes: "XS,S,M,L,XL",
-    rating: 4.7,
+    rating: 4.5,
     imageUrl: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop",
     description: "A warm, lightweight fleece jacket perfect for layering. Soft brushed interior with a relaxed fit and zip-up front.",
     colour: "Black",
-    price: 99999.90,
+    price: 89.99,
     stock: 34,
     active: true,
     createdAt: new Date("2024-01-10"),
+    images: [],
   },
   {
     id: 2,
@@ -59,6 +61,7 @@ export const products: Product[] = [
     stock: 21,
     active: true,
     createdAt: new Date("2024-01-10"),
+    images: [],
   },
   {
     id: 3,
@@ -75,6 +78,7 @@ export const products: Product[] = [
     stock: 18,
     active: true,
     createdAt: new Date("2024-02-01"),
+    images: [],
   },
   {
     id: 4,
@@ -91,6 +95,7 @@ export const products: Product[] = [
     stock: 0,
     active: true,
     createdAt: new Date("2024-02-01"),
+    images: [],
   },
   {
     id: 5,
@@ -107,6 +112,7 @@ export const products: Product[] = [
     stock: 60,
     active: true,
     createdAt: new Date("2024-03-05"),
+    images: [],
   },
   {
     id: 6,
@@ -123,6 +129,7 @@ export const products: Product[] = [
     stock: 45,
     active: true,
     createdAt: new Date("2024-03-05"),
+    images: [],
   },
   {
     id: 7,
@@ -139,6 +146,7 @@ export const products: Product[] = [
     stock: 12,
     active: true,
     createdAt: new Date("2024-04-01"),
+    images: [],
   },
   {
     id: 8,
@@ -155,5 +163,55 @@ export const products: Product[] = [
     stock: 0,
     active: false,
     createdAt: new Date("2023-11-15"),
+    images: [],
   },
+];
+
+export type ProductImage = {
+  id: number;
+  url: string;
+  position: number;
+  productId: number;
+};
+
+export const productImages: ProductImage[] = [
+  // Product 1 - Fleece Jacket Black
+  { id: 1, url: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop", position: 0, productId: 1 },
+  { id: 2, url: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=800&auto=format&fit=crop", position: 1, productId: 1 },
+  { id: 3, url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop", position: 2, productId: 1 },
+
+  // Product 2 - Fleece Jacket Navy
+  { id: 4, url: "https://images.unsplash.com/photo-1604644401890-0bd678c83788?w=800&auto=format&fit=crop", position: 0, productId: 2 },
+  { id: 5, url: "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=800&auto=format&fit=crop", position: 1, productId: 2 },
+  { id: 6, url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop", position: 2, productId: 2 },
+
+  // Product 3 - Slim Chino Pants Beige
+  { id: 7, url: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop", position: 0, productId: 3 },
+  { id: 8, url: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop", position: 1, productId: 3 },
+  { id: 9, url: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&auto=format&fit=crop", position: 2, productId: 3 },
+
+  // Product 4 - Slim Chino Pants Olive
+  { id: 10, url: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&auto=format&fit=crop", position: 0, productId: 4 },
+  { id: 11, url: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&auto=format&fit=crop", position: 1, productId: 4 },
+  { id: 12, url: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&auto=format&fit=crop", position: 2, productId: 4 },
+
+  // Product 5 - Oversized Cotton Tee White
+  { id: 13, url: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop", position: 0, productId: 5 },
+  { id: 14, url: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800&auto=format&fit=crop", position: 1, productId: 5 },
+  { id: 15, url: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop", position: 2, productId: 5 },
+
+  // Product 6 - Oversized Cotton Tee Black
+  { id: 16, url: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800&auto=format&fit=crop", position: 0, productId: 6 },
+  { id: 17, url: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop", position: 1, productId: 6 },
+  { id: 18, url: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop", position: 2, productId: 6 },
+
+  // Product 7 - Puffer Vest Grey
+  { id: 19, url: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&auto=format&fit=crop", position: 0, productId: 7 },
+  { id: 20, url: "https://images.unsplash.com/photo-1604644401890-0bd678c83788?w=800&auto=format&fit=crop", position: 1, productId: 7 },
+  { id: 21, url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop", position: 2, productId: 7 },
+
+  // Product 8 - Ribbed Knit Sweater Camel
+  { id: 22, url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop", position: 0, productId: 8 },
+  { id: 23, url: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop", position: 1, productId: 8 },
+  { id: 24, url: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop", position: 2, productId: 8 }
 ];

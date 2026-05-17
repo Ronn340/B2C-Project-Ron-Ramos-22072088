@@ -1,7 +1,67 @@
+"use client";
 import { Product } from "@repo/db/data";
+import { useState } from "react";
 
-export async function BlogDetail({ product }: { product: Product }) {
-  return <div>
-    nothingness
-  </div>;
+export function ProductDetail({ product }: { product: Product }) {
+
+  const [selectedSize, setSelectedSize] = useState("");
+  const [activeImage, setActiveImage] = useState(0);
+  const sizes = product.sizes.split(",");
+
+  return <div className="grid grid-cols-2 gap-4 mt-8" data-test-id={`product-${product.id}`}>
+    {/* Grid Laout - 50/50 image<->info */}
+    <div className="flex flex-row relative gap-4 justify-center">
+      <div className="relative w-1/2">
+        <img
+          src={product.images[activeImage]?.url}
+          alt={product.name}
+          className="w-full h-auto object-cover rounded-lg justify-self-center aspect-3/4 border-1 border-secondary"
+        />
+        {product.stock === 0 ? <span className="absolute top-0 left-0 bg-black text-white mt-1 ml-1 py-1 px-2 rounded-lg">Out of Stock</span> : ""}
+      </div>
+      <div className="flex flex-col gap-4">
+        {product.images.map((img, index) => (
+          <img
+            key={img.id}
+            src={img.url}
+            onClick={() => setActiveImage(index)}
+            className="w-30 h-30 object-cover rounded-lg cursor-pointer border-1 border-secondary"
+          />
+        ))}
+      </div>
+    </div>
+
+    <div className="flex flex-col gap-4 px-4">
+      <span className="text-sm text-gray-500 uppercase tracking-wide mb-1">
+        {product.articleType} | {product.gender}
+      </span>
+      <h1 className="text-2xl font-bold text-primary">{product.name}</h1>
+      <p className="text-xl font-semibold text-primary">{product.price.toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</p>
+      <div className="flex flex-row gap-2 items-center">
+        {sizes.map((size) => (
+          <button
+            key={size}
+            onClick={() => setSelectedSize(size)}
+            data-test-id={`size-button-${size}`}
+            className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
+          >
+            {size}
+          </button>
+        ))}
+      </div>
+      <div>
+        <p className="text-lg font-semibold text-gray-500 mb-1">Description</p>
+        <p className="text-lg text-gray-500">{product.description}</p>
+      </div>
+      <button
+        disabled={!selectedSize || product.stock === 0}
+        data-test-id="add-to-cart-button"
+        className={`${!selectedSize || product.stock === 0 ?
+          'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
+          'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
+      >
+        {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
+      </button>
+    </div>
+  </div>
 }

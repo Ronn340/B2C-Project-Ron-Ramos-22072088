@@ -7,7 +7,7 @@ test("render product data summary", async () => {
   const { getByText, getByTestId, getByRole } = render(<ProductListItem product={product_1} />);
 
   await expect.element(getByText("Classic Tee"))
-  await expect.element(getByRole("link")).toHaveAttribute("href", "/product/classic-tee");
+  await expect.element(getByRole("link")).toHaveAttribute("href", "/item/classic-tee");
   await expect.element(getByText("T-Shirt")).toBeVisible();
   await expect.element(getByText("Men")).toBeVisible();
   await expect.element(getByTestId("size-S")).toBeVisible();

@@ -1,172 +1,144 @@
-// import { seed } from "@repo/db/seed";
-// import { expect, test, type Page } from "./fixtures";
+import { seed } from "@repo/db/seed";
+import { expect, test, type Page } from "./fixtures";
 
-// test.beforeAll(async () => {
-//   await seed();
-// });
+test.beforeAll(async () => {
+    await seed();
+});
 
-// test.describe("HOME SCREEN", () => {
-//   async function checkItem(
-//     page: Page,
-//     name: string,
-//     link: string,
-//     count?: number,
-//   ) {
-//     const linkItem = page.getByTitle(name);
-//     await expect(linkItem).toBeVisible();
-//     await expect(linkItem).toHaveAttribute("href", link);
+test.describe("HOME SCREEN", () => {
+    async function checkItem(
+        //Changed the checkItem function to use <button> role instead of <a> role, since the items are now buttons instead of links
+        page: Page,
+        name: string,
+        param: string,
+        value: string,
+    ) {
+        const btn = page.getByRole("button", { name, exact: true });
+        await expect(btn).toBeVisible();
+        await btn.click();
+        await expect(page).toHaveURL(new RegExp(`${param}=${value}`));
+    }
 
-//     if (count) {
-//       const item = linkItem.getByTestId("post-count");
-//       await expect(item).toBeVisible();
-//       await expect(item).toContainText(count.toString());
-//     }
-//   }
+    test(
+        "Show Active Posts only",
+        async ({ page }) => {
+            await page.goto("/");
 
-//   test(
-//     "Show Active Posts",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+            await expect(await page.locator("article").count()).toBe(7);
+        },
+    );
 
-//       await expect(await page.locator("article").count()).toBe(3);
-//     },
-//   );
+    test(
+        "Gender links anchor to correct URL",
 
-//   test(
-//     "Category Links",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+        async ({ page }) => {
+            await page.goto("/");
 
-//       // HOME SCREEN > User must see the list of blog post categories, where each category points to UI showing only posts of that category
+            //  HOME SCREEN > User must see the list of products filtered by gender
+            //  Link Checking via click
 
-//       await checkItem(page, "Category / React", "/category/react");
-//       await checkItem(page, "Category / Node", "/category/node");
-//       await checkItem(page, "Category / Mongo", "/category/mongo");
-//       await checkItem(page, "Category / DevOps", "/category/devops");
-//     },
-//   );
+            await checkItem(page, "Women", "gender", "Women");
+            await checkItem(page, "Men", "gender", "Men");
+            await checkItem(page, "Unisex", "gender", "Unisex");
+            await checkItem(page, "Kids", "gender", "Kids");
+        },
+    );
 
-//   test(
-//     "History Links",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+    test(
+        "Sort links anchor to correct URL",
 
-//       // HOME SCREEN > User must see the history of blog posts, showing month and year, where each moth, year tuple points to UI showing only posts of that category
+        async ({ page }) => {
+            await page.goto("/");
 
-//       await checkItem(page, "History / December, 2024", "/history/2024/12", 1);
-//       await checkItem(page, "History / April, 2022", "/history/2022/4", 1);
-//       await checkItem(page, "History / March, 2020", "/history/2020/3", 1);
+            //  HOME SCREEN > User must see the list of products sorted by different criteria
+            //  Link Checking via select
 
-//       // HOME SCREEN > Tags and history items shown are only considered from active posts
+            await page.getByTestId("sort-select").selectOption("Best Reviews");
+            await expect(page).toHaveURL(new RegExp(`sort=Best.Reviews`));
 
-//       await expect(page.getByText("December, 2012")).not.toBeVisible();
-//     },
-//   );
+            await page.getByTestId("sort-select").selectOption("Price Ascending");
+            await expect(page).toHaveURL(new RegExp(`sort=Price.Ascending`));
 
-//   test(
-//     "Tag Links",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+        },
+    );
 
-//       // HOME SCREEN > User must see the list of blog post tags, where each tag points to UI showing only posts of that category
+    test(
+        "Type links anchor to correct URL",
 
-//       await checkItem(page, "Tag / Back-End", "/tags/back-end", 1);
-//       await checkItem(page, "Tag / Front-End", "/tags/front-end", 2);
-//       await checkItem(page, "Tag / Optimisation", "/tags/optimisation", 1);
-//       await checkItem(page, "Tag / Dev Tools", "/tags/dev-tools", 1);
+        async ({ page }) => {
+            await page.goto("/");
+            
+            //  HOME SCREEN > User must see the list of products filtered by type
+            //  Link Checking via select
+            await page.getByTestId("type-select").selectOption("Pants");
+            await expect(page).toHaveURL(new RegExp(`type=Pants`));
 
-//       // HOME SCREEN > Tags and history items shown are only considered from active posts
+            await page.getByTestId("type-select").selectOption("Shorts");
+            await expect(page).toHaveURL(new RegExp(`type=Shorts`));
+        }
+    );
 
-//       await expect(page.getByText("Mainframes")).not.toBeVisible();
-//     },
-//   );
 
-//   test(
-//     "Post Item",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+    test(
+        "Post Item",
+        async ({ page }) => {
+            await page.goto("/");
 
-//       const item = await page.getByTestId("blog-post-1");
-//       await expect(item).toBeVisible();
+            const item = await page.getByTestId("product-1");
+            await expect(item).toBeVisible();
 
-//       // HOME SCREEN > The list shows the following items:
-//       // - short description
-//       // - date
-//       // - image
-//       // - tags
-//       // - likes
-//       // - views
+            // HOME SCREEN > The list shows the following items:
+            // - product name
+            // - link to product page
+            // - CLothing Category 
+            // - Clothing Gender
+            // - price
+            // - rating
 
-//       await expect(item.getByText("Boost your conversion rate")).toBeVisible();
-//       await expect(
-//         item.getByText("Boost your conversion rate"),
-//       ).toHaveAttribute("href", "/post/boost-your-conversion-rate");
+            await expect(item.getByText("Fluffy Fleece Jacket")).toBeVisible();
+            await expect(item).toHaveAttribute("href", "/item/fleece-jacket-black");
 
-//       await expect(item.getByText("Node")).toBeVisible();
-//       await expect(item.getByText("#Back-End")).toBeVisible();
-//       await expect(item.getByText("#Databases")).toBeVisible();
-//       await expect(item.getByText("18 Apr 2022")).toBeVisible();
-//       await expect(item.getByText("320 views")).toBeVisible();
-//       await expect(item.getByText("3 likes")).toBeVisible();
-//     },
-//   );
+            await expect(item.getByTestId("category")).toHaveText("Jacket | Women");
+            await expect(item.getByText("$89.99")).toBeVisible();
+            await expect(item.getByText("4.5")).toBeVisible();
+        },
+    );
 
-//   test(
-//     "Dark Mode Switch",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+    test(
+        "Dark mode works toggle correctly",
 
-//       // HOME SCREEN > User must be able to switch between dark and light theme with a button
+        async ({ page }) => {
+            await page.goto("/");
 
-//       const html = await page.getAttribute("html", "data-theme");
-//       if (html === "dark") {
-//         await page.getByText("Light Mode").click();
-//         // await page.waitForTimeout(1000);
-//         await expect(await page.getAttribute("html", "data-theme")).toBe(
-//           "light",
-//         );
-//       } else {
-//         await page.getByText("Dark Mode").click();
-//         // await page.waitForTimeout(1000);
-//         await expect(await page.getAttribute("html", "data-theme")).toBe(
-//           "dark",
-//         );
-//       }
-//     },
-//   );
+            // HOME SCREEN > User must be able to switch between dark and light theme with a button
 
-//   test(
-//     "Search Box",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/");
+            const html = await page.getAttribute("html", "data-theme");
+            if (html === "dark") {
+                await page.getByText("Light Mode").click();
+                // await page.waitForTimeout(1000);
+                await expect(await page.getAttribute("html", "data-theme")).toBe(
+                    "light",
+                );
+            } else {
+                await page.getByText("Dark Mode").click();
+                // await page.waitForTimeout(1000);
+                await expect(await page.getAttribute("html", "data-theme")).toBe(
+                    "dark",
+                );
+            }
+        },
+    );
 
-//       // HOME SCREEN > There is a search functionality that filters blogs based on string found in title or description
+    test(
+        "Search functionality filters products based on query string",
 
-//       await page.getByPlaceholder("Search").fill("Fatboy");
-//       await expect(page).toHaveURL("/search?q=Fatboy");
-//     },
-//   );
-// });
-import { test } from "@playwright/test";
-test("placeholder", () => {});
+        async ({ page }) => {
+            await page.goto("/");
+
+            // HOME SCREEN > There is a search functionality that filters the products based on the search string stored in the query string
+
+            await page.getByPlaceholder("Search").fill("Fatboy");
+            await expect(page).toHaveURL("/shop?urlId=fatboy");
+        },
+    );
+});

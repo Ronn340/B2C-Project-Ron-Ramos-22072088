@@ -1,77 +1,47 @@
-// import { seed } from "@repo/db/seed";
-// import { expect, test } from "./fixtures";
+import { seed } from "@repo/db/seed";
+import { expect, test } from "./fixtures";
 
-// test.describe("DETAIL SCREEN", () => {
-//   test.beforeEach(async () => {
-//     await seed();
-//   });
+test.describe("DETAIL SCREEN", () => {
+    test.beforeEach(async () => {
+        await seed();
+    });
 
-//   test(
-//     "Detail view",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/post/boost-your-conversion-rate");
+    test(
+        "Render all product details",
 
-//       // DETAIL SCREEN > Detail page shows the same items as list item, but the short description is replaced by formatted long description
+        async ({ page }) => {
+            await page.goto("/item/fleece-jacket-black");
 
-//       const item = await page.getByTestId("blog-post-1");
-//       await expect(item).toBeVisible();
+            // DETAIL SCREEN > Display product name, description, sizes, price, and photos
 
-//       await expect(item.getByText("Boost your conversion rate")).toBeVisible();
-//       await expect(
-//         item.getByText("Boost your conversion rate"),
-//       ).toHaveAttribute("href", "/post/boost-your-conversion-rate");
+            const item = await page.getByTestId("product-1");
+            await expect(item).toBeVisible();
 
-//       await expect(item.getByText("Node")).toBeVisible();
-//       await expect(item.getByText("#Back-End")).toBeVisible();
-//       await expect(item.getByText("#Databases")).toBeVisible();
-//       await expect(item.getByText("18 Apr 2022")).toBeVisible();
-//       await expect(item.getByText("321 views")).toBeVisible();
-//       await expect(item.getByText("3 likes")).toBeVisible();
+            await expect(item.getByText("Fluffy Fleece Jacket")).toBeVisible();
 
-//       // DETAIL SCREEN > Detail text is stored as Markdown, which needs to be converted to HTML
-//       await expect(
-//         await page.getByTestId("content-markdown").innerHTML(),
-//       ).toContain("<strong>sint voluptas</strong>");
-//     },
-//   );
+            await expect(item.getByText("Jacket | Women")).toBeVisible();
+            await expect(item.getByText("$89.99")).toBeVisible();
+            await expect(item.getByText("A warm, lightweight fleece jacket perfect for layering. Soft brushed interior with a relaxed fit and zip-up front.")).toBeVisible();
+            await expect(item.getByTestId("size-button-XS")).toBeVisible();
+            await expect(item.getByTestId("size-button-S")).toBeVisible();
+            await expect(item.getByTestId("size-button-M")).toBeVisible();
+            await expect(item.getByTestId("size-button-L")).toBeVisible();
+            await expect(item.getByTestId("size-button-XL")).toBeVisible();
+        },
+    );
 
-//   test(
-//     "Views increase on each view",
-//     {
-//       tag: "@a3",
-//     },
-//     async ({ page }) => {
-//       // BACKEND / CLIENT > Each visit of the page increases the post "views" count by one
+    test(
+        "Add to cart disabled when no size selected",
 
-//       await page.goto("/post/boost-your-conversion-rate");
-//       await expect(page.getByText("321 views")).toBeVisible();
-//       await page.goto("/post/boost-your-conversion-rate");
-//       await expect(page.getByText("322 views")).toBeVisible();
-//     },
-//   );
+        async ({ page }) => {
 
-//   test(
-//     "Like posts",
-//     {
-//       tag: "@a3",
-//     },
-//     async ({ page }) => {
-//       // BACKEND / CLIENT > User can "like" the post on the detail screen, NOT on the list
-
-//       await page.goto("/post/boost-your-conversion-rate");
-//       await expect(page.getByText("3 likes")).toBeVisible();
-//       await page.getByTestId("like-button").click();
-//       await expect(page.getByText("4 likes")).toBeVisible();
-
-//       await page.goto("/post/boost-your-conversion-rate");
-//       await expect(page.getByText("4 likes")).toBeVisible();
-//       await page.getByTestId("like-button").click();
-//       await expect(page.getByText("3 likes")).toBeVisible();
-//     },
-//   );
-// });
-import { test } from "@playwright/test";
-test("placeholder", () => {});
+            await page.goto("/item/fleece-jacket-black");
+            
+            // DETAIL SCREEN > "Add to cart" button is disabled until a size is selected
+            await expect(page.getByTestId("add-to-cart-button")).toBeDisabled();
+            
+            await page.getByTestId("size-button-M").click();
+            await expect(page.getByTestId("add-to-cart-button")).toBeEnabled();
+        },
+    );
+});

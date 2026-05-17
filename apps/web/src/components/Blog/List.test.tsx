@@ -18,6 +18,7 @@ export const product_1: Product = {
     stock: 5,
     active: true,
     createdAt: new Date("2024-10-01T00:00:00Z"),
+    images: [],
 };
 
 export const product_2: Product = {
@@ -35,6 +36,7 @@ export const product_2: Product = {
     stock: 0,
     active: true,
     createdAt: new Date("2024-09-15T00:00:00Z"),
+    images: [],
 };
 
 test("renders 0 products when no products are present", async () => {
