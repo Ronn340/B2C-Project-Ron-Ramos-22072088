@@ -36,6 +36,11 @@ export function FilterBar() {
       >
         Men
       </button>
+      <button className={`px-4 py-2 text-textSecondary hover:text-wsu transition-colors ${gender === "Unisex" ? "text-wsu" : ""}`}
+        onClick={() => handleOnChange("gender", "Unisex")}
+      >
+        Unisex
+      </button>
       <button className={`px-4 py-2 text-textSecondary hover:text-wsu transition-colors ${gender === "Kids" ? "text-wsu" : ""}`}
         onClick={() => handleOnChange("gender", "Kids")}
       >
