@@ -29,12 +29,15 @@ export function ProductDetail({ product }: { product: Product }) {
 
   return <div className="grid grid-cols-2 gap-4 mt-8">
     {/* Grid Laout - 50/50 image<->info */}
-    <div className="flex flex-row gap-4 justify-center">
-      <img
-        src={product.images[activeImage]?.url}
-        alt={product.name}
-        className="w-1/2 h-auto object-cover rounded-lg justify-self-center aspect-3/4 border-1 border-secondary"
-      />
+    <div className="flex flex-row relative gap-4 justify-center">
+      <div className="relative w-1/2">
+        <img
+          src={product.images[activeImage]?.url}
+          alt={product.name}
+          className="w-full h-auto object-cover rounded-lg justify-self-center aspect-3/4 border-1 border-secondary"
+        />
+        {product.stock === 0 ? <span className="absolute top-0 left-0 bg-black text-white mt-1 ml-1 py-1 px-2 rounded-lg">Out of Stock</span> : ""}
+      </div>
       <div className="flex flex-col gap-4">
         {product.images.map((img, index) => (
           <img
@@ -68,10 +71,10 @@ export function ProductDetail({ product }: { product: Product }) {
         <p className="text-lg font-semibold text-gray-500 mb-1">Description</p>
         <p className="text-lg text-gray-500">{product.description}</p>
       </div>
-      <button 
+      <button
         disabled={!selectedSize || product.stock === 0}
-        className={`${!selectedSize || product.stock === 0 ? 
-          'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' : 
+        className={`${!selectedSize || product.stock === 0 ?
+          'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
           'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary transition-colors'}`}
       >
         {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
