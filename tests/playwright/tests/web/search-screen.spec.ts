@@ -1,69 +1,59 @@
-// import { expect, test } from "./fixtures";
+import { expect, test } from "./fixtures";
 
-// test.describe("SEARCH SCREEN", () => {
-//   test(
-//     "Existing search result",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/search?q=Fat");
+test.describe("SEARCH SCREEN", () => {
+  test(
+    "Existing search result",
 
-//       // SEARCH SCREEN > Displays results based on search string stored in the query string (e.g. /search?q=Fat)
+    async ({ page }) => {
+      await page.goto("/shop?urlId=vest");
 
-//       // console.log(await page.innerHTML("body"));
+      // SEARCH SCREEN > Displays results based on search string stored in the query string (e.g. /search?q=Chino)
 
-//       const articles = await page.locator('[data-test-id^="blog-post-"]');
-//       await expect(articles).toHaveCount(1);
+      const articles = await page.locator('[data-test-id^="product-"]');
+      await expect(articles).toHaveCount(1);
 
-//       await expect(page.getByTestId("blog-post-2")).toBeVisible();
-//       await expect(
-//         page.getByText("Better front ends with Fatboy Slim"),
-//       ).toBeVisible();
-//     },
-//   );
+      await expect(page.getByTestId("product-7")).toBeVisible();
+      await expect(
+        page.getByText("Lightweight Puffer Vest"),
+      ).toBeVisible();
+    },
+  );
 
-//   test(
-//     "Search finds multiple posts",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/search?q=front");
+  test(
+    "Search finds multiple posts",
 
-//       // SEARCH SCREEN > Displays results based on search string stored in the query string (e.g. /search?q=Fat)
+    async ({ page }) => {
+      await page.goto("/shop?urlId=jacket");
 
-//       const articles = await page.locator('[data-test-id^="blog-post-"]');
-//       await expect(articles).toHaveCount(2);
+      // SEARCH SCREEN > Displays results based on search string stored in the query string (e.g. /search?q=Fat)
 
-//       await expect(page.getByTestId("blog-post-2")).toBeVisible();
-//       await expect(
-//         page.getByText("Better front ends with Fatboy Slim"),
-//       ).toBeVisible();
+      const articles = await page.locator('[data-test-id^="product-"]');
+      await expect(articles).toHaveCount(2);
 
-//       await expect(page.getByTestId("blog-post-3")).toBeVisible();
-//       await expect(
-//         page.getByText("No front end framework is the best"),
-//       ).toBeVisible();
-//     },
-//   );
+        await expect(page.getByTestId("product-1")).toBeVisible();
+        await expect(
+          page.getByText("Black"),
+        ).toBeVisible();
 
-//   test(
-//     "Invalid Search",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/search?q=abc");
+        await expect(page.getByTestId("product-2")).toBeVisible();
+        await expect(
+          page.getByText("Navy"),
+        ).toBeVisible();
+      },
+    );
 
-//       // SEARCH SCREEN > Displays "0 Posts" when search does not find anything
+  test(
+    "Invalid Search",
 
-//       const articles = await page.locator('[data-test-id^="blog-post-"]');
-//       await expect(articles).toHaveCount(0);
+    async ({ page }) => {
+      await page.goto("/shop?urlId=abc");
 
-//       await expect(page.getByText("0 Posts")).toBeVisible();
-//     },
-//   );
-// });
-import { test } from "@playwright/test";
-test("placeholder", () => {});
+      // SEARCH SCREEN > Displays "0 Posts" when search does not find anything
+
+      const articles = await page.locator('[data-test-id^="product-"]');
+      await expect(articles).toHaveCount(0);
+
+      await expect(page.getByText("0 Products")).toBeVisible();
+    },
+  );
+});
