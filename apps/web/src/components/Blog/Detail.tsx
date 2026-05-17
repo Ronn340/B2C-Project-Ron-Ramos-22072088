@@ -75,7 +75,7 @@ export function ProductDetail({ product }: { product: Product }) {
         disabled={!selectedSize || product.stock === 0}
         className={`${!selectedSize || product.stock === 0 ?
           'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
-          'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary transition-colors'}`}
+          'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
       >
         {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
       </button>
