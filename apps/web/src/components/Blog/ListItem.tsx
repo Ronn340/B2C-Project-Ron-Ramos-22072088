@@ -13,7 +13,7 @@ export function ProductListItem({ product }: { product: Product }) {
   const sizeList = product.sizes.split(",");
 
   return (
-    <Link href={`/product/${product.urlId}`}>
+    <Link href={`/item/${product.urlId}`}>
       <article
         className="group flex flex-col rounded-lg overflow-hidden bg-background hover:shadow-xl hover:bg-primary hover:text-primary transition-shadow"
         data-test-id={`product-${product.id}`}
