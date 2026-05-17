@@ -31,6 +31,9 @@ export function TopMenu({ query }: { query?: string }) {
       router.push(`/shop?${params.toString()}`);
     },
   );
+  const handleHome = () => {
+    router.push(`/`);
+  }
 
   // TODO: create and hook the search input to the handleSearch function
   //       make sure you are able to explain what the handleSearch is doing and what debounce does
@@ -38,7 +41,9 @@ export function TopMenu({ query }: { query?: string }) {
   return (
     <div>
       <div className="flex items-center px-12 bg-[#0D0D0D] py-3  gap-10">
-        <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10" />
+        <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10" 
+        onClick={handleHome}
+        />
         <span ><Search className="text-gray-500" /></span>
         <input
           type="text"

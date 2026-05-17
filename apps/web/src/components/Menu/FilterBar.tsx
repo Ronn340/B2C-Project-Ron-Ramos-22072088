@@ -20,20 +20,23 @@ export function FilterBar() {
     //Redirect Final Step
     router.push(`/shop?${params.toString()}`);
   }
+  const gender = searchParams.get("gender");
+  const type = searchParams.get("type");
+  const sort = searchParams.get("sort");
 
   return (
     <div className="flex items-center justify-center px-12 py-3 gap-4 bg-secondary">
-      <button className="px-4 py-2 text-textSecondary hover:text-wsu transition-colors"
+      <button className={`px-4 py-2 text-textSecondary hover:text-wsu transition-colors ${gender === "Women" ? "text-wsu" : ""}`}
         onClick={() => handleOnChange("gender", "Women")}
       >
         Women
       </button>
-      <button className="px-4 py-2 text-textSecondary hover:text-wsu transition-colors"
+      <button className={`px-4 py-2 text-textSecondary hover:text-wsu transition-colors ${gender === "Men" ? "text-wsu" : ""}`}
         onClick={() => handleOnChange("gender", "Men")}
       >
         Men
       </button>
-      <button className="px-4 py-2 text-textSecondary hover:text-wsu transition-colors"
+      <button className={`px-4 py-2 text-textSecondary hover:text-wsu transition-colors ${gender === "Kids" ? "text-wsu" : ""}`}
         onClick={() => handleOnChange("gender", "Kids")}
       >
         Kids
