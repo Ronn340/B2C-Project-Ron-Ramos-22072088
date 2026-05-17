@@ -109,7 +109,7 @@ test.describe("HOME SCREEN", () => {
             await expect(item.getByText("Fluffy Fleece Jacket")).toBeVisible();
             await expect(item).toHaveAttribute("href", "/item/fleece-jacket-black");
 
-            await expect(item.getByTestId("product-category")).toHaveText("Jacket | Women");
+            await expect(item.getByTestId("category")).toHaveText("Jacket | Women");
             await expect(item.getByText("$89.99")).toBeVisible();
             await expect(item.getByText("4.5")).toBeVisible();
         },

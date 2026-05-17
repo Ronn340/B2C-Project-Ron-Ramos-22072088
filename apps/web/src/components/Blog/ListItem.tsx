@@ -34,12 +34,12 @@ export function ProductListItem({ product }: { product: Product }) {
 
         {/* Details */}
         <div className="flex flex-col gap-2 p-4">
-          <span data-test-id="product-category" className="text-xs text-gray-400 uppercase tracking-wide">
+          <span data-test-id="category" className="text-xs text-gray-400 uppercase tracking-wide">
             {product.articleType} | {product.gender}
           </span>
 
 
-          <span data-test-id="product-name" className="font-semibold text-primary group-hover:text-wsu">
+          <span data-test-id="name" className="font-semibold text-primary group-hover:text-wsu">
             {product.name}
           </span>
 
