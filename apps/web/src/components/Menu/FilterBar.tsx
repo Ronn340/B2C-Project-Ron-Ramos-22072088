@@ -49,6 +49,7 @@ export function FilterBar() {
       <select className="px-4 py-2 text-textSecondary hover:text-wsu transition-colors"
         onChange={(e) => handleOnChange("sort", e.target.value)}
         value={searchParams.get("sort") || "none"}
+        data-test-id="sort-select"
       >
         <option value="none">Sort by: None</option>
         <option value="Best Reviews">Sort by: Best Reviews</option>
@@ -59,6 +60,8 @@ export function FilterBar() {
       </select>
       <select className="px-4 py-2 text-textSecondary hover:text-wsu transition-colors"
         onChange={(e) => handleOnChange("type", e.target.value)}
+        value={searchParams.get("type") || "all"}
+        data-test-id="type-select"
       >
         <option value="all">Type: All</option>
         <option value="Pants">Type: Pants</option>
