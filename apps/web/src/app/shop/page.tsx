@@ -10,7 +10,7 @@ export default async function Page({ searchParams }: {
         sort?: string
     }
 }) {
-    const { gender, urlId, type, sort } = searchParams;
+    const { gender, urlId, type, sort } = await searchParams;
 
     const products = await client.db.product.findMany({
         where: {
