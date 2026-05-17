@@ -1,37 +1,46 @@
 import { client } from "./client.js";
-//import { posts } from "./data.js";
+import { products, productImages } from "./data.js";
 import { toUrlPath } from "@repo/utils/url";
 
 export async function seed() {
-  //TODO: Uncomment below once you set up Prisma and loaded data to your database
-  // console.log("🌱 Seeding data");
-  // await client.db.like.deleteMany();
-  // await client.db.post.deleteMany();
-  // for (const post of posts) {
-  //   await client.db.post.create({
-  //     data: {
-  //       title: post.title,
-  //       content: post.content,
-  //       category: post.category,
-  //       description: post.description,
-  //       imageUrl: post.imageUrl,
-  //       tags: post.tags
-  //         .split(",")
-  //         .map((p) => (p.trim()))
-  //         .join(","),
-  //       urlId: post.urlId,
-  //       active: post.active,
-  //       date: post.date,
-  //       id: post.id,
-  //       views: post.views,
-  //     },
-  //   });
-  //   for (let i = 0; i < post.likes; i++) {
-  //     await client.db.like.create({
-  //       data: {
-  //         postId: post.id,
-  //         userIP: `192.168.100.${i}`,
-  //       },
-  //     });
-  //   }
+  // TODO: Uncomment below once you set up Prisma and loaded data to your database
+  console.log("🌱 Seeding data");
+
+  await client.db.productImage.deleteMany();  //Collapse foreign key relationships FIRST
+  await client.db.product.deleteMany();       //Then delete
+
+  //Create products - main table
+  for (const p of products) {
+    await client.db.product.create({
+      data: {
+        id: p.id,
+        urlId: p.urlId,
+        name: p.name,
+        articleType: p.articleType,
+        gender: p.gender,
+        sizes: p.sizes,
+        rating: p.rating,
+        imageUrl: p.imageUrl,
+        description: p.description,
+        colour: p.colour,
+        price: p.price,
+        stock: p.stock,
+        active: p.active,
+        createdAt: p.createdAt,
+      }
+    });
   }
+
+  //Create images - separation for image storage
+  for (const i of productImages) {
+    await client.db.productImage.create({
+      data: {
+        id: i.id,
+        url: i.url,
+        position: i.position,
+        productId: i.productId
+      }
+    })
+  }
+
+}

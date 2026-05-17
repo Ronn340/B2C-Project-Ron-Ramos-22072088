@@ -18,6 +18,7 @@ model Product {
   gender      String
   sizes       String //Comma separated string
   rating      Float //Static number
+  imageUrl    String
   description String
   colour      String
   price       Float
