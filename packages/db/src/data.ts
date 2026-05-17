@@ -16,6 +16,7 @@ export type Product = {
 
   active: boolean;
   createdAt: Date;
+  images: ProductImage[];
 };
 
 
@@ -43,6 +44,7 @@ export const products: Product[] = [
     stock: 34,
     active: true,
     createdAt: new Date("2024-01-10"),
+    images: [],
   },
   {
     id: 2,
@@ -59,6 +61,7 @@ export const products: Product[] = [
     stock: 21,
     active: true,
     createdAt: new Date("2024-01-10"),
+    images: [],
   },
   {
     id: 3,
@@ -75,6 +78,7 @@ export const products: Product[] = [
     stock: 18,
     active: true,
     createdAt: new Date("2024-02-01"),
+    images: [],
   },
   {
     id: 4,
@@ -91,6 +95,7 @@ export const products: Product[] = [
     stock: 0,
     active: true,
     createdAt: new Date("2024-02-01"),
+    images: [],
   },
   {
     id: 5,
@@ -107,6 +112,7 @@ export const products: Product[] = [
     stock: 60,
     active: true,
     createdAt: new Date("2024-03-05"),
+    images: [],
   },
   {
     id: 6,
@@ -123,6 +129,7 @@ export const products: Product[] = [
     stock: 45,
     active: true,
     createdAt: new Date("2024-03-05"),
+    images: [],
   },
   {
     id: 7,
@@ -139,6 +146,7 @@ export const products: Product[] = [
     stock: 12,
     active: true,
     createdAt: new Date("2024-04-01"),
+    images: [],
   },
   {
     id: 8,
@@ -155,6 +163,7 @@ export const products: Product[] = [
     stock: 0,
     active: false,
     createdAt: new Date("2023-11-15"),
+    images: [],
   },
 ];
 

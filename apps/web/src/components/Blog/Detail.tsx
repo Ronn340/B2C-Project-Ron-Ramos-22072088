@@ -1,25 +1,6 @@
 "use client";
+import { Product } from "@repo/db/data";
 import { useState } from "react";
-
-type ProductImage = {
-  id: number;
-  url: string;
-  position: number;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  articleType: string;
-  gender: string;
-  sizes: string;
-  rating: number;
-  description: string;
-  colour: string;
-  price: number;
-  stock: number;
-  images: ProductImage[];
-};
 
 export function ProductDetail({ product }: { product: Product }) {
 
