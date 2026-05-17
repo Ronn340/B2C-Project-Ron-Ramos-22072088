@@ -1,42 +1,47 @@
-// import { expect, test } from "./fixtures";
+import { expect, test } from "./fixtures";
 
-// test.describe("HISTORY SCREEN", () => {
-//   test(
-//     "Existing history",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/history/2024/12");
+test.describe("SORTING SCREEN", () => {
+    test(
+        "ALPHABETICAL SORTING",
 
-//       // HISTORY SCREEN > Displays posts from year and month specified in the url (e.g. /history/2024/12)
+        async ({ page }) => {
+            await page.goto("/shop?sort=Name+Ascending");
 
-//       const articles = await page.locator('[data-test-id^="blog-post-"]');
-//       await expect(articles).toHaveCount(1);
+            // SORTING SCREEN > A-Z sorting
+            const articles = await page.locator('[data-test-id^="product-"]');
+            await expect(articles).toHaveCount(7);
 
-//       await expect(page.getByTestId("blog-post-3")).toBeVisible();
-//       await expect(
-//         page.getByText("No front end framework is the best"),
-//       ).toBeVisible();
-//     },
-//   );
+            const articleFirst = await page.locator('[data-test-id^="product-"]').first();
+            await expect(articleFirst).toBeVisible();
+            await expect(articleFirst).toHaveAttribute("data-test-id", "product-1");
 
-//   test(
-//     "Invalid History",
-//     {
-//       tag: "@a1",
-//     },
-//     async ({ page }) => {
-//       await page.goto("/history/2024/1");
+            const articleLast = await page.locator('[data-test-id^="product-"]').last();
+            await expect(articleLast).toBeVisible();
+            await expect(articleLast).toHaveAttribute("data-test-id", "product-4");
+        },
+    );
 
-//       // HISTORY SCREEN > Displays "0 Posts" when search does not find anything
+    test(
+        "BEST REVIEW SORTING",
 
-//       const articles = await page.locator('[data-test-id^="blog-post-"]');
-//       await expect(articles).toHaveCount(0);
+        async ({ page }) => {
+            await page.goto("/shop?sort=Best+Reviews");
 
-//       await expect(page.getByText("0 Posts")).toBeVisible();
-//     },
-//   );
-// });
-import { test } from "@playwright/test";
-test("placeholder", () => {});
+            // SORTING SCREEN > Best Reviews sorting
+
+            const articles = await page.locator('[data-test-id^="product-"]');
+            await expect(articles).toHaveCount(7);
+
+            const articleFirst = await page.locator('[data-test-id^="product-"]').first();
+            await expect(articleFirst).toBeVisible();
+            await expect(articleFirst).toHaveAttribute("data-test-id", "product-2");
+
+            const articleLast = await page.locator('[data-test-id^="product-"]').last();
+            await expect(articleLast).toBeVisible();
+            await expect(articleLast).toHaveAttribute("data-test-id", "product-6");
+
+            await expect(articleFirst.getByText("4.7")).toBeVisible();
+            await expect(articleLast.getByText("4.3")).toBeVisible();
+        }
+    );
+});
