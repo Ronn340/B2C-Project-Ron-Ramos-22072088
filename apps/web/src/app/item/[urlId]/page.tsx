@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 import App from "next/app";
 
-export default async function Page({ params }: { params: { urlId: string } }) {
+export default async function Page({ params }: { params: Promise<{ urlId: string }> }) {
     // Find the item matching urlId link paramatere
     const { urlId } = await params;
     const product = await client.db.product.findUnique({

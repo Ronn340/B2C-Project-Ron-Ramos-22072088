@@ -3,12 +3,12 @@ import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 export default async function Page({ searchParams }: {
     searchParams:
-    {
+    Promise<{
         gender?: string;
         urlId?: string;
         type?: string;
         sort?: string
-    }
+    }>
 }) {
     const { gender, urlId, type, sort } = await searchParams;
 
