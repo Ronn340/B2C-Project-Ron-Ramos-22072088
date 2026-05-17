@@ -2,7 +2,7 @@ import { expect, test } from "./fixtures";
 
 test.describe("SEARCH SCREEN", () => {
   test(
-    "Existing search result",
+    "Search finds correctly one post",
 
     async ({ page }) => {
       await page.goto("/shop?urlId=vest");
@@ -20,7 +20,7 @@ test.describe("SEARCH SCREEN", () => {
   );
 
   test(
-    "Search finds multiple posts",
+    "Search finds correctly multiple posts",
 
     async ({ page }) => {
       await page.goto("/shop?urlId=jacket");
@@ -43,7 +43,7 @@ test.describe("SEARCH SCREEN", () => {
     );
 
   test(
-    "Invalid Search",
+    "Invalid Search returns no results",
 
     async ({ page }) => {
       await page.goto("/shop?urlId=abc");

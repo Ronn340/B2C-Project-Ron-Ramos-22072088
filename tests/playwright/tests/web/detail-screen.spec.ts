@@ -7,7 +7,7 @@ test.describe("DETAIL SCREEN", () => {
     });
 
     test(
-        "Detail view",
+        "Render all product details",
 
         async ({ page }) => {
             await page.goto("/item/fleece-jacket-black");
@@ -31,7 +31,7 @@ test.describe("DETAIL SCREEN", () => {
     );
 
     test(
-        "Add to cart disabled",
+        "Add to cart disabled when no size selected",
 
         async ({ page }) => {
 

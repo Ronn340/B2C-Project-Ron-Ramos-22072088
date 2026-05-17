@@ -7,7 +7,7 @@ test.describe("GENDER SCREEN", () => {
   });
 
   test(
-    "Existing Gender",
+    "Gender filter returns correct results",
     
     async ({ page }) => {
       await page.goto("/shop?gender=Women");
@@ -30,7 +30,7 @@ test.describe("GENDER SCREEN", () => {
   );
 
   test(
-    "Invalid Gender",
+    "Invalid Gender returns no results",
 
     async ({ page }) => {
       await page.goto("/shop?gender=Invalid");

@@ -2,7 +2,7 @@ import { expect, test } from "./fixtures";
 
 test.describe("TYPE SCREEN", () => {
   test(
-    "Existing Type with two products",
+    "Type filter returns correct results",
 
     async ({ page }) => {
       await page.goto("/shop?type=T-Shirt");
@@ -20,7 +20,7 @@ test.describe("TYPE SCREEN", () => {
   );
 
   test(
-    "Invalid Type",
+    "Invalid Type returns no results",
     {
       tag: "@a1",
     },

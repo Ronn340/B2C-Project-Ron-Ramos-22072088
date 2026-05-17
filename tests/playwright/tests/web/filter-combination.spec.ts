@@ -7,7 +7,7 @@ test.describe("FILTER COMBINATION", () => {
     });
 
     test(
-        "Multiple Filters",
+        "Multiple filters work together",
         async ({ page }) => {
             await page.goto("/");
             // FILTER COMBINATION > Applying multiple filters together click one by one

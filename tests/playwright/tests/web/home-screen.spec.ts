@@ -20,7 +20,7 @@ test.describe("HOME SCREEN", () => {
     }
 
     test(
-        "Show Active Posts",
+        "Show Active Posts only",
         async ({ page }) => {
             await page.goto("/");
 
@@ -29,7 +29,7 @@ test.describe("HOME SCREEN", () => {
     );
 
     test(
-        "Gender Links",
+        "Gender links anchor to correct URL",
 
         async ({ page }) => {
             await page.goto("/");
@@ -45,7 +45,7 @@ test.describe("HOME SCREEN", () => {
     );
 
     test(
-        "Sort Links",
+        "Sort links anchor to correct URL",
 
         async ({ page }) => {
             await page.goto("/");
@@ -63,8 +63,8 @@ test.describe("HOME SCREEN", () => {
     );
 
     test(
-        "Type Links",
-        
+        "Type links anchor to correct URL",
+
         async ({ page }) => {
             await page.goto("/");
             
@@ -105,10 +105,8 @@ test.describe("HOME SCREEN", () => {
     );
 
     test(
-        "Dark Mode Switch",
-        {
-            tag: "@a1",
-        },
+        "Dark mode works toggle correctly",
+
         async ({ page }) => {
             await page.goto("/");
 
@@ -132,7 +130,7 @@ test.describe("HOME SCREEN", () => {
     );
 
     test(
-        "Search Box",
+        "Search functionality filters products based on query string",
 
         async ({ page }) => {
             await page.goto("/");

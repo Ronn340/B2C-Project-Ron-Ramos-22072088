@@ -2,7 +2,7 @@ import { expect, test } from "./fixtures";
 
 test.describe("SORTING SCREEN", () => {
     test(
-        "ALPHABETICAL SORTING",
+        "Alphabetical sorting correctly sorts products from A-Z",
 
         async ({ page }) => {
             await page.goto("/shop?sort=Name+Ascending");
@@ -22,7 +22,7 @@ test.describe("SORTING SCREEN", () => {
     );
 
     test(
-        "BEST REVIEW SORTING",
+        "Best review sorting correctly sorts products from best to worst",
 
         async ({ page }) => {
             await page.goto("/shop?sort=Best+Reviews");
