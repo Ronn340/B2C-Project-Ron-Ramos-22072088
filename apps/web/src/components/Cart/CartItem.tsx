@@ -61,7 +61,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                         +
                     </button>
                 </div>
-                <button className="flex text-sm text-wsu mt-1 hover:underline" onClick={async () => await removeFromCart(item.product.id)}>
+                <button className="flex text-sm text-wsu mt-1 hover:underline w-fit" onClick={async () => await removeFromCart(item.product.id)}>
                     Remove
                 </button>
                 <span className="text-sm font-semibold text-primary">Subtotal: ${(item.product.price * item.quantity).toFixed(2)}</span>
