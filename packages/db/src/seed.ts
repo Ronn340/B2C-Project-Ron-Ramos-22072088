@@ -9,6 +9,9 @@ export async function seed() {
   await client.db.productImage.deleteMany();  //Collapse foreign key relationships FIRST
   await client.db.product.deleteMany();       //Then delete
 
+  await client.db.cartItem.deleteMany();      //Collapse foreign key relationships FIRST
+  await client.db.cart.deleteMany();          //Then delete
+
   //Create products - main table
   for (const p of products) {
     await client.db.product.create({
