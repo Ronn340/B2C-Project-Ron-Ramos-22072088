@@ -31,7 +31,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ productId })
-                });
+            });
         if (!res.ok) {
             alert("Failed to remove item from cart");
         } else {
@@ -53,7 +53,9 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                 <span className="text-sm text-gray-500">Size: Men S</span>
                 <span className="text-lg font-bold text-primary mt-1">${item.product.price.toFixed(2)}</span>
                 <div className="flex items-center gap-2 border rounded-lg w-fit bg-textSecondary border-primary my-2">
-                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg" onClick={async () => await addToCart(item.product.id, "subtract")}>
+                    <button
+                        className={`${item.quantity === 1 ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
+                        onClick={async () => await addToCart(item.product.id, "subtract")}>
                         -
                     </button>
                     <span>{item.quantity}</span>
@@ -61,7 +63,8 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                         +
                     </button>
                 </div>
-                <button className="flex text-sm text-wsu mt-1 hover:underline w-fit" onClick={async () => await removeFromCart(item.product.id)}>
+                <button className="flex text-sm text-wsu mt-1 hover:underline w-fit"
+                    onClick={async () => await removeFromCart(item.product.id)}>
                     Remove
                 </button>
                 <span className="text-sm font-semibold text-primary">Subtotal: ${(item.product.price * item.quantity).toFixed(2)}</span>

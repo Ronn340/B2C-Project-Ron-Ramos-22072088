@@ -60,18 +60,22 @@ export async function PATCH(req: NextRequest) {
     if (!cartItem)
         return NextResponse.json({ message: "Item not found in cart" }, { status: 404 });
 
-    //Find action
-    const data = action === "subtract" ? { quantity: { decrement: 1 } } : { quantity: { increment: 1 } };
 
     //End at performing the update
-    if (cartItem.quantity > 1) {
+    if (action === "add") {
         await client.db.cartItem.update({
             where: { id: cartItem.id },
-            data
+            data: { quantity: { increment: 1 } }
         });
-    } else {
-        await client.db.cartItem.delete({ where: { id: cartItem.id } });
+    } else if (action === "subtract") {
+        if (cartItem.quantity > 1) {
+            await client.db.cartItem.update({
+                where: { id: cartItem.id },
+                data: { quantity: { decrement: 1 } }
+            });
+        }
     }
+        
     return NextResponse.json({ ok: true });
 }
 
