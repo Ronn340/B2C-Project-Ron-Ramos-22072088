@@ -41,7 +41,7 @@ export const product_2: Product = {
 
 test("renders 0 products when no products are present", async () => {
     const { getByText } = render(<ProductList products={[]} />);
-    await expect.element(getByText("0 Products")).toBeInTheDocument();
+    await expect.element(getByText("No items found")).toBeInTheDocument();
 });
 
 test("renders all products", async () => {
