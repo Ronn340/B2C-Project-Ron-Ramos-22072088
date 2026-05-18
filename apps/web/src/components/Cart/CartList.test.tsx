@@ -41,7 +41,7 @@ const product_2: Product = {
     createdAt: new Date(),
 }
 
-const cartItem_1: CartItemWithProduct = {
+export const cartItem_1: CartItemWithProduct = {
     id: "cuid-pretend",
     cartId: "id-pretend",
     productId: 1,
