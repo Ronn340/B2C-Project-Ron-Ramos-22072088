@@ -34,3 +34,39 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json({ ok: true });
 }
+
+export async function PATCH(req: NextRequest) {
+    const userId = await getCurrentUserId();
+    if (!userId)
+        return NextResponse.json({ message: "Not logged in" }, { status: 401 });
+
+    const { action, productId } = await req.json();
+    const cart = await client.db.cart.findUnique({ where: { userId } });
+
+    if (action === "subtract") {
+        const res = await client.db.cartItem.update({
+            where: {
+                cartId_productId: {
+                    cartId: cart!.id,
+                    productId
+                }
+            },
+            data: {
+                quantity: { decrement: 1 }
+            }
+        });
+    } else {
+        const res = await client.db.cartItem.update({
+            where: {
+                cartId_productId: {
+                    cartId: cart!.id,
+                    productId
+                }
+            },
+            data: {
+                quantity: { increment: 1 }
+            }
+        });
+    }
+    return NextResponse.json({ ok: true });
+}

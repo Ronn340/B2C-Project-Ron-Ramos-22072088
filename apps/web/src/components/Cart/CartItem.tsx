@@ -1,7 +1,27 @@
+"use client";
 import { CartItem, Product } from "@prisma/client";
+import { useRouter } from "next/navigation";
 type CartItemWithProduct = CartItem & { product: Product };
 
 export function CartListItem({ item }: { item: CartItemWithProduct }) {
+    const router = useRouter();
+
+    async function addToCart(productId: number, action: String) {
+        const res = await fetch("/api/cart",
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ productId, action })
+            });
+        if (!res.ok) {
+            alert("Failed to update cart");
+        } else {
+            router.refresh();
+        }
+    }
+
     return (
         <div className="flex gap-2 py-4">
             {/* Left side item */}
@@ -16,11 +36,11 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                 <span className="text-sm text-gray-500">Size: Men S</span>
                 <span className="text-lg font-bold text-primary mt-1">${item.product.price.toFixed(2)}</span>
                 <div className="flex items-center gap-2 border rounded-lg w-fit bg-textSecondary border-primary my-2">
-                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg">
+                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg" onClick={async () => await addToCart(item.product.id, "subtract")}>
                         -
                     </button>
                     <span>{item.quantity}</span>
-                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg">
+                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg" onClick={async () => await addToCart(item.product.id, "add")}>
                         +
                     </button>
                 </div>
