@@ -37,36 +37,40 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     const userId = await getCurrentUserId();
+    const { action, productId } = await req.json();
+
+    //Find user
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
 
-    const { action, productId } = await req.json();
+    //Find cart
     const cart = await client.db.cart.findUnique({ where: { userId } });
+    if (!cart)
+        return NextResponse.json({ message: "Cart not found" }, { status: 404 });
 
-    if (action === "subtract") {
-        const res = await client.db.cartItem.update({
-            where: {
-                cartId_productId: {
-                    cartId: cart!.id,
-                    productId
-                }
-            },
-            data: {
-                quantity: { decrement: 1 }
+    //Find editable item
+    const cartItem = await client.db.cartItem.findUnique({
+        where: {
+            cartId_productId: {
+                cartId: cart.id,
+                productId
             }
+        }
+    });
+    if (!cartItem)
+        return NextResponse.json({ message: "Item not found in cart" }, { status: 404 });
+
+    //Find action
+    const data = action === "subtract" ? { quantity: { decrement: 1 } } : { quantity: { increment: 1 } };
+
+    //End at performing the update
+    if (cartItem.quantity > 1) {
+        await client.db.cartItem.update({
+            where: { id: cartItem.id },
+            data
         });
     } else {
-        const res = await client.db.cartItem.update({
-            where: {
-                cartId_productId: {
-                    cartId: cart!.id,
-                    productId
-                }
-            },
-            data: {
-                quantity: { increment: 1 }
-            }
-        });
+        await client.db.cartItem.delete({ where: { id: cartItem.id } });
     }
     return NextResponse.json({ ok: true });
 }
