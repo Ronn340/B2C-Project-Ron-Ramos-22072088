@@ -43,4 +43,14 @@ export async function seed() {
     })
   }
 
+  // Temporary free user
+  await client.db.user.deleteMany();
+
+  await client.db.user.create({
+    data: {
+      id: "user-123",
+      email: "ron@test.com",
+    }
+  });
+
 }
