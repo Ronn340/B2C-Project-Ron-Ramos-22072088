@@ -1,5 +1,5 @@
 import type { Product } from "@repo/db/data";
-import ProductList from "./Blog/List";
+import ProductList from "./Product/List";
 
 export function Main({
   products,

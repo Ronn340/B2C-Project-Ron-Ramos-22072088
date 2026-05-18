@@ -1,4 +1,4 @@
-import { ProductDetail } from "@/components/Blog/Detail";
+import { ProductDetail } from "@/components/Product/Detail";
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 import App from "next/app";

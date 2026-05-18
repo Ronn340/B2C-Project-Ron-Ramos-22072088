@@ -1,4 +1,4 @@
-import ProductList from "@/components/Blog/List";
+import ProductList from "@/components/Product/List";
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 export default async function Page({ searchParams }: {
