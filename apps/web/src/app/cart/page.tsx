@@ -2,6 +2,7 @@ import { getCurrentUserId } from "@/utils/auth";
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 import { CartList } from "@/components/Cart/CartList";
+import { CartSummary } from "@/components/Cart/CartSummary";
 
 export default async function CartPage() {
     const userId = await getCurrentUserId();
@@ -30,8 +31,13 @@ export default async function CartPage() {
 
     return (
         <AppLayout>
-            <h1>Your Cart</h1>
-            <CartList items={cart.items} />
+            <div className="flex items-center justify-center px-5 py-5 ">
+                <span className="text-xl font-bold text-primary p-3 border-y border-wsu">Shopping Cart</span>
+            </div>
+            <div className="grid grid-cols-[3fr_1fr] px-10">
+                <CartList items={cart.items} />
+                <CartSummary items={cart.items} />
+            </div>
         </AppLayout>
     )
 }
