@@ -14,7 +14,7 @@ setup(
     const content = {
       cookies: [
         {
-          name: "user-id",
+          name: "userId",
           value: "user-123",
           domain: "localhost",
           secure: false,
