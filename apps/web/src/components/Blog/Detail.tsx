@@ -4,9 +4,25 @@ import { useState } from "react";
 
 export function ProductDetail({ product }: { product: Product }) {
 
+  //Client side interactives
   const [selectedSize, setSelectedSize] = useState("");
   const [activeImage, setActiveImage] = useState(0);
   const sizes = product.sizes.split(",");
+
+  //Add to cart API call
+  async function addToCart(productId: number) {
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ productId })
+    });
+
+    if (res.ok) {
+      alert("Product added to cart!");
+    }
+  }
 
   return <div className="grid grid-cols-2 gap-4 mt-8" data-test-id={`product-${product.id}`}>
     {/* Grid Laout - 50/50 image<->info */}
@@ -59,6 +75,11 @@ export function ProductDetail({ product }: { product: Product }) {
         className={`${!selectedSize || product.stock === 0 ?
           'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
           'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
+        onClick={async () => {
+          if (selectedSize && product.stock > 0) {
+            await addToCart(product.id);
+          }
+        }}
       >
         {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
       </button>
