@@ -42,7 +42,9 @@ export default async function CartPage() {
             </div>
             <div className="grid grid-cols-[3fr_1fr] px-10">
                 <CartList items={cart.items} />
-                <CartSummary items={cart.items} />
+                <div className="w-full">
+                    <CartSummary items={cart.items} />
+                </div>
             </div>
         </AppLayout>
     )

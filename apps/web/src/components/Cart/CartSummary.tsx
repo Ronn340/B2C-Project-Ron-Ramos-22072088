@@ -21,7 +21,7 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
             <div>
                 <span className="text-xs text-textSecondary">Shipping to be calculated at checkout.</span>
             </div>
-            <button className="w-full mt-4 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors">
+            <button className="w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors">
                 Proceed to Checkout
             </button>
         </div>
