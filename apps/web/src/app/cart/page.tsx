@@ -1,10 +1,10 @@
-import { getCurrentUser } from "@/utils/auth";
+import { getCurrentUserId } from "@/utils/auth";
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { client } from "@repo/db/client";
 import { CartList } from "@/components/Cart/CartList";
 
 export default async function CartPage() {
-    const userId = await getCurrentUser();
+    const userId = await getCurrentUserId();
     if (!userId) {
         return <AppLayout><p className="flex items-center justify-center">Please log in to view your cart.</p></AppLayout>
         //probably add a button here to go to the login page

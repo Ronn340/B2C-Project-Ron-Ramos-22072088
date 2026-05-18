@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "@/utils/auth";
+import { getCurrentUserId } from "@/utils/auth";
 import { client } from "@repo/db/client";
 
 export async function POST(req: NextRequest) {
 
-    const userId = await getCurrentUser();
+    const userId = await getCurrentUserId();
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
 
