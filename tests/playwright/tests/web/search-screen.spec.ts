@@ -48,12 +48,12 @@ test.describe("SEARCH SCREEN", () => {
     async ({ page }) => {
       await page.goto("/shop?urlId=abc");
 
-      // SEARCH SCREEN > Displays "0 Posts" when search does not find anything
+      // SEARCH SCREEN > Displays "No items found" when search does not find anything
 
       const articles = await page.locator('[data-test-id^="product-"]');
       await expect(articles).toHaveCount(0);
 
-      await expect(page.getByText("0 Products")).toBeVisible();
+      await expect(page.getByText("No items found")).toBeVisible();
     },
   );
 });
