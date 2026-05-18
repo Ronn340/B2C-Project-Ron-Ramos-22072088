@@ -76,7 +76,7 @@ export function ProductDetail({ product }: { product: Product }) {
             -
           </button>
           <span>{quantity}</span>
-          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg" onClick={() => setQuantity(quantity + 1)}>
+          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"  data-test-id="quantity-increment" onClick={() => setQuantity(quantity + 1)}>
             +
           </button>
         </div>

@@ -7,8 +7,7 @@ import fs from "fs";
 // //////////////////////////////////////
 
 setup(
-  "authenticate assignment 2",
-  { tag: "@a2" },
+    "authenticate",
   async ({ page, playwright }) => {
     const authFile = ".auth/user.json";
     const content = {

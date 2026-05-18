@@ -56,11 +56,15 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                     <button
                         disabled={item.quantity === 1}
                         className={`${item.quantity === 1 ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
-                        onClick={async () => await addToCart(item.product.id, "subtract")}>
+                        onClick={async () => await addToCart(item.product.id, "subtract")}
+                        data-test-id="quantity-decrement">
                         -
                     </button>
-                    <span>{item.quantity}</span>
-                    <button className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg" onClick={async () => await addToCart(item.product.id, "add")}>
+                    <span data-test-id="quantity">{item.quantity}</span>
+                    <button 
+                        className="w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg" 
+                        onClick={async () => await addToCart(item.product.id, "add")} 
+                        data-test-id="quantity-increment">
                         +
                     </button>
                 </div>
@@ -68,7 +72,9 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                     onClick={async () => await removeFromCart(item.product.id)}>
                     Remove
                 </button>
-                <span className="text-sm font-semibold text-primary">Subtotal: ${(item.product.price * item.quantity).toFixed(2)}</span>
+                <span className="text-sm font-semibold text-primary" data-test-id="subtotal">
+                    Subtotal: ${(item.product.price * item.quantity).toFixed(2)}
+                </span>
             </div>
         </article>
     );
