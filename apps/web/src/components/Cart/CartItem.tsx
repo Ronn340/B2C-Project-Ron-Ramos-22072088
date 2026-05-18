@@ -54,6 +54,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                 <span className="text-lg font-bold text-primary mt-1">${item.product.price.toFixed(2)}</span>
                 <div className="flex items-center gap-2 border rounded-lg w-fit bg-textSecondary border-primary my-2">
                     <button
+                        disabled={item.quantity === 1}
                         className={`${item.quantity === 1 ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
                         onClick={async () => await addToCart(item.product.id, "subtract")}>
                         -
