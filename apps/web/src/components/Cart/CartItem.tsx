@@ -3,6 +3,7 @@ import { CartItem, Product } from "@prisma/client";
 import { useRouter } from "next/navigation";
 type CartItemWithProduct = CartItem & { product: Product };
 
+//"-" and "+" button operations to API
 export function CartListItem({ item }: { item: CartItemWithProduct }) {
     const router = useRouter();
 
@@ -17,6 +18,22 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
             });
         if (!res.ok) {
             alert("Failed to update cart");
+        } else {
+            router.refresh();
+        }
+    }
+
+    async function removeFromCart(productId: number) {
+        const res = await fetch("/api/cart",
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ productId })
+                });
+        if (!res.ok) {
+            alert("Failed to remove item from cart");
         } else {
             router.refresh();
         }
@@ -44,7 +61,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                         +
                     </button>
                 </div>
-                <button className="flex text-sm text-wsu mt-1 hover:underline">
+                <button className="flex text-sm text-wsu mt-1 hover:underline" onClick={async () => await removeFromCart(item.product.id)}>
                     Remove
                 </button>
                 <span className="text-sm font-semibold text-primary">Subtotal: ${(item.product.price * item.quantity).toFixed(2)}</span>

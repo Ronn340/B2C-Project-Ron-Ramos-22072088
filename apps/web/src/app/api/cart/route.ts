@@ -74,3 +74,32 @@ export async function PATCH(req: NextRequest) {
     }
     return NextResponse.json({ ok: true });
 }
+
+export async function DELETE(req: NextRequest) {
+    const userId = await getCurrentUserId();
+    const { productId } = await req.json();
+
+    //Find user
+    if (!userId)
+        return NextResponse.json({ message: "Not logged in" }, { status: 401 });
+
+    //Find cart
+    const cart = await client.db.cart.findUnique({ where: { userId } });
+    if (!cart)
+        return NextResponse.json({ message: "Cart not found" }, { status: 404 });
+
+    //Find editable item
+    const cartItem = await client.db.cartItem.findUnique({
+        where: {
+            cartId_productId: {
+                cartId: cart.id,
+                productId
+            }
+        }
+    });
+    if (!cartItem)
+        return NextResponse.json({ message: "Item not found in cart" }, { status: 404 });
+
+    await client.db.cartItem.delete({ where: { id: cartItem.id } });
+    return NextResponse.json({ ok: true });
+}
