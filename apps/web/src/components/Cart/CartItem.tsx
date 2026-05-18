@@ -40,7 +40,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
     }
 
     return (
-        <div className="flex gap-2 py-4">
+        <article className="flex gap-2 py-4">
             {/* Left side item */}
             <div className="flex w-1/5 p-4 items-center justify-center">
                 <img src={item.product.imageUrl} alt={item.product.name}
@@ -70,6 +70,6 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                 </button>
                 <span className="text-sm font-semibold text-primary">Subtotal: ${(item.product.price * item.quantity).toFixed(2)}</span>
             </div>
-        </div>
+        </article>
     );
 }
