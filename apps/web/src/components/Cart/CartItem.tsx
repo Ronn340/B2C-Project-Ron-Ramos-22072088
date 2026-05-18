@@ -7,7 +7,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
             {/* Left side item */}
             <div className="flex w-1/5 p-4 items-center justify-center">
                 <img src={item.product.imageUrl} alt={item.product.name}
-                    className="w-full aspect-square border border-gray-300 rounded-lg" />
+                    className="w-full object-cover aspect-square border border-gray-300 rounded-lg" />
             </div>
             {/* Right side details */}
             <div className="flex flex-col w-3/4 pt-4">
