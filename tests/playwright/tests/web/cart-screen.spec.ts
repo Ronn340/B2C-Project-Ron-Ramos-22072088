@@ -26,6 +26,8 @@ test.describe("CART SCREEN", () => {
 
     //Test Add to Cart from /item/[product] aka detail page
     test("Add item to cart from detail page", async ({ page }) => {
+        page.on("dialog", dialog => dialog.accept());
+
         await page.goto("/item/oversized-cotton-tee-black");
         const selectSize = page.getByTestId("size-button-S");
         await selectSize.click();
@@ -39,6 +41,8 @@ test.describe("CART SCREEN", () => {
 
     //Test multiple items to add it cart at once
     test("Add multiple items at once to cart", async ({ page }) => {
+        page.on("dialog", dialog => dialog.accept());
+
         await page.goto("/item/oversized-cotton-tee-black");
         const selectSize = page.getByTestId("size-button-S");
         await selectSize.click();
@@ -68,7 +72,7 @@ test.describe("CART SCREEN", () => {
             await incrementButton.click();
             await expect(page.getByTestId("quantity")).toHaveText("3");
             await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $149.70");
-            
+
         });
 
         //Test decrement -=1
