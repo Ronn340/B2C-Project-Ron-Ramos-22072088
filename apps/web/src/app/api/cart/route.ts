@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
 
-    const { productId } = await req.json();
+    const { productId, quantity } = await req.json();
 
     const cart = await client.db.cart.upsert({
         where: { userId },
@@ -26,10 +26,10 @@ export async function POST(req: NextRequest) {
         create: {                       //Create new cartItem
             cartId: cart.id,
             productId: productId,
-            quantity: 1
+            quantity: quantity
         },
         update: {
-            quantity: { increment: 1 }  //Up +1 if already exists
+            quantity: { increment: quantity }  //Increment by the specified quantity if already exists
         }
     })
     return NextResponse.json({ ok: true });

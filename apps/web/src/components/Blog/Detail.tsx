@@ -17,7 +17,7 @@ export function ProductDetail({ product }: { product: Product }) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ productId })
+      body: JSON.stringify({ productId, quantity })
     });
 
     if (res.ok) {
