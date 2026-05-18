@@ -37,15 +37,18 @@ export default async function CartPage() {
 
     return (
         <AppLayout>
-            <div className="flex items-center justify-center px-5 py-5 ">
-                <span className="text-xl font-bold text-primary p-3 border-y border-wsu">Shopping Cart</span>
-            </div>
-            <div className="grid grid-cols-[3fr_1fr] px-10">
-                <CartList items={cart.items} />
-                <div className="w-full">
-                    <CartSummary items={cart.items} />
+            <div className="mx-15">
+                <div className="flex items-center justify-center px-5 py-5 ">
+                    <span className="text-xl font-bold text-primary p-3 border-y border-wsu">Shopping Cart</span>
+                </div>
+                <div className="grid grid-cols-[3fr_1fr] px-10">
+                    <CartList items={cart.items} />
+                    <div className="w-full">
+                        <CartSummary items={cart.items} />
+                    </div>
                 </div>
             </div>
+
         </AppLayout>
     )
 }
