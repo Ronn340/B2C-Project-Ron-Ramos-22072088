@@ -4,9 +4,26 @@ import { useState } from "react";
 
 export function ProductDetail({ product }: { product: Product }) {
 
+  //Client side interactives
   const [selectedSize, setSelectedSize] = useState("");
   const [activeImage, setActiveImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const sizes = product.sizes.split(",");
+
+  //Add to cart API call
+  async function addToCart(productId: number) {
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ productId, quantity })
+    });
+
+    if (res.ok) {
+      alert("Product added to cart!");
+    }
+  }
 
   return <div className="grid grid-cols-2 gap-4 mt-8" data-test-id={`product-${product.id}`}>
     {/* Grid Laout - 50/50 image<->info */}
@@ -53,15 +70,32 @@ export function ProductDetail({ product }: { product: Product }) {
         <p className="text-lg font-semibold text-gray-500 mb-1">Description</p>
         <p className="text-lg text-gray-500">{product.description}</p>
       </div>
-      <button
-        disabled={!selectedSize || product.stock === 0}
-        data-test-id="add-to-cart-button"
-        className={`${!selectedSize || product.stock === 0 ?
-          'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
-          'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
-      >
-        {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
-      </button>
+      <div className="grid grid-cols-[1fr_3fr] gap-4 mt-4">
+        <div className="flex items-center justify-between gap-2 border rounded-lg bg-textSecondary border-primary my-2">
+          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+            -
+          </button>
+          <span>{quantity}</span>
+          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"  data-test-id="quantity-increment" onClick={() => setQuantity(quantity + 1)}>
+            +
+          </button>
+        </div>
+        <button
+          disabled={!selectedSize || product.stock === 0}
+          data-test-id="add-to-cart-button"
+          className={`${!selectedSize || product.stock === 0 ?
+            'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
+            'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
+          onClick={async () => {
+            if (selectedSize && product.stock > 0) {
+              await addToCart(product.id);
+            }
+          }}
+        >
+          {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
+        </button>
+      </div>
+
     </div>
   </div>
 }

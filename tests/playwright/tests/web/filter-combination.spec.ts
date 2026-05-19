@@ -29,7 +29,7 @@ test.describe("FILTER COMBINATION", () => {
             await expect(page).toHaveURL(new RegExp(`gender=Women&sort=Price.Ascending&type=T-Shirt`));
             const articles_3 = await page.locator('[data-test-id^="product-"]');
             await expect(articles_3).toHaveCount(0);
-            await expect(page.getByText("0 Products")).toBeVisible();
+            await expect(page.getByText("No items found")).toBeVisible();
         },
     );
 });

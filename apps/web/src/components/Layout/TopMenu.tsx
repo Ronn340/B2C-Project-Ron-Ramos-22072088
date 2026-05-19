@@ -5,6 +5,7 @@ import ThemeSwitch from "../Themes/ThemeSwitcher";
 import { Search } from "lucide-react";
 import { FilterBar } from "../Menu/FilterBar";
 import { toUrlPath } from "@repo/utils/url";
+import { ShoppingCart, User, Heart } from "lucide-react";
 
 function debounce<T extends (...args: Any[]) => Any>(fn: T, delay = 300) {
   let timeoutId: Any;
@@ -34,6 +35,9 @@ export function TopMenu({ query }: { query?: string }) {
   const handleHome = () => {
     router.push(`/`);
   }
+  const handleCart = () => {
+    router.push(`/cart`);
+  }
 
   // TODO: create and hook the search input to the handleSearch function
   //       make sure you are able to explain what the handleSearch is doing and what debounce does
@@ -41,8 +45,8 @@ export function TopMenu({ query }: { query?: string }) {
   return (
     <div>
       <div className="flex items-center px-12 bg-[#0D0D0D] py-3  gap-10">
-        <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10" 
-        onClick={handleHome}
+        <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10"
+          onClick={handleHome}
         />
         <span ><Search className="text-gray-500" /></span>
         <input
@@ -53,8 +57,13 @@ export function TopMenu({ query }: { query?: string }) {
           defaultValue={searchParams.get("urlId") || ""}
         />
 
-        <div className="flex ml-auto items-center gap-4 border rounded-full border-none rounded px-5 py-1 hover:bg-wsu transition-colors">
-          <ThemeSwitch />
+        <div className="flex ml-auto items-center gap-10 ">
+          <User className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" />
+          <ShoppingCart className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" onClick={handleCart} />
+          <Heart className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" />
+          <div className="border rounded-full border-none rounded px-5 py-1 hover:bg-wsu transition-colors" >
+            <ThemeSwitch />
+          </div>
         </div>
       </div>
       <FilterBar />

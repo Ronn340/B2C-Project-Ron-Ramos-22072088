@@ -56,7 +56,7 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // { name: "setup", testMatch: /.*\.setup\.ts/ },
+    { name: "setup", testMatch: /.*\.setup\.ts/ }, //UNCOMMENTED 5/18/2026 - DUE TO MISSING AUTHENTICATION (cookies were manually sertup for now)
     // {
     //   name: "chromium",
     //   testDir: "./tests/admin",
@@ -72,8 +72,9 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         baseURL: "http://localhost:3001",
+        storageState: ".auth/user.json",
       },
-      // dependencies: process.env.CI ? ["setup"] : [],
+      dependencies: ["setup"],
     },
 
     // {
@@ -112,18 +113,18 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: process.env.CI
     ? [
-        // {
-        //   reuseExistingServer: true,
-        //   command: "pnpm start:admin",
-        //   url: "http://localhost:3002",
-        //   // reuseExistingServer: !process.env.CI,
-        // },
-        {
-          reuseExistingServer: true,
-          command: "pnpm start:web",
-          url: "http://localhost:3001",
-          // reuseExistingServer: !process.env.CI,
-        },
-      ]
+      // {
+      //   reuseExistingServer: true,
+      //   command: "pnpm start:admin",
+      //   url: "http://localhost:3002",
+      //   // reuseExistingServer: !process.env.CI,
+      // },
+      {
+        reuseExistingServer: true,
+        command: "pnpm start:web",
+        url: "http://localhost:3001",
+        // reuseExistingServer: !process.env.CI,
+      },
+    ]
     : undefined,
 });
