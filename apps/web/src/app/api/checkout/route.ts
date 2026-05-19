@@ -8,14 +8,14 @@ import Stripe from "stripe";
     //<==optional==>
     give my passed items[] prop to line_items in session creation
     //==>optional==>
-    
+
     API returns response URL
     finally just use that session URL via window.location.href = url; to redirect
 */
 
 type CartItemWithProduct = CartItem & { product: Product };
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export async function POST(req: NextRequest) {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
     const { cartItems } = await req.json();
     //body should be cartItemsWithProduct[] - CartItem->Apppended_Product
 
@@ -26,11 +26,11 @@ export async function POST(req: NextRequest) {
                 name: item.product.name,
                 images: [item.product.imageUrl],
             },
-            unit_amount : item.product.price * 100, // Stripe expects unit in cents
+            unit_amount: item.product.price * 100, // Stripe expects unit in cents
         },
         quantity: item.quantity,
     }));
-    const session =  await stripe.checkout.sessions.create({
+    const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
