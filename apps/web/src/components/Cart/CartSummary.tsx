@@ -1,12 +1,29 @@
 "use client";
 
-type CartItemWithProduct = CartItem & { product: Product };
 import { CartItem, Product } from "@prisma/client";
+
+type CartItemWithProduct = CartItem & { product: Product };
 
 export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
     const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
+    const handleCheckout = async () => {
+        const response = await fetch("/api/checkout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ cartItems: items })
+        });
+
+        const { url } = await response.json();
+        window.location.href = url;
+
+        // await stripe?.redirectToCheckout({ sessionId: id });
+        // DEPRECIATED or got removed or something
+    }
+    
     return (
         <div className="border-t pt-4 mt-4 bg-secondary rounded-lg p-4">
             <h2 className="text-lg font-semibold text-textSecondary">Order Summary</h2>
@@ -21,7 +38,10 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
             <div>
                 <span className="text-xs text-textSecondary">Shipping to be calculated at checkout.</span>
             </div>
-            <button className="w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors">
+            <button 
+                className="w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors"
+                onClick={handleCheckout}
+            >
                 Proceed to Checkout
             </button>
         </div>
