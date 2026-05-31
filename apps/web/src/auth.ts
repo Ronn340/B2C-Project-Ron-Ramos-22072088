@@ -1,8 +1,12 @@
+import { Prisma } from "@prisma/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { client } from "@repo/db/client";
 import NextAuth, { NextAuthResult } from "next-auth";
 import Google from "next-auth/providers/google";
 
 
 const nextAuth = NextAuth({
+    adapter: PrismaAdapter(client.db),
     providers: [Google,]
 });
 
