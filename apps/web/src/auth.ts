@@ -7,7 +7,8 @@ import Google from "next-auth/providers/google";
 
 const nextAuth = NextAuth({
     adapter: PrismaAdapter(client.db),
-    providers: [Google,]
+    providers: [Google,],
+    trustHost: true,
 });
 
 //My goat JonNode28: Type Inference issue fix "https://github.com/nextauthjs/next-auth/issues/10568#issuecomment-2849090669"
