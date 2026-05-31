@@ -6,6 +6,8 @@ import { Search } from "lucide-react";
 import { FilterBar } from "../Menu/FilterBar";
 import { toUrlPath } from "@repo/utils/url";
 import { ShoppingCart, User, Heart } from "lucide-react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useState } from "react";
 
 function debounce<T extends (...args: Any[]) => Any>(fn: T, delay = 300) {
   let timeoutId: Any;
@@ -18,6 +20,8 @@ function debounce<T extends (...args: Any[]) => Any>(fn: T, delay = 300) {
 export function TopMenu({ query }: { query?: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { data: session } = useSession();
+  const [open, setOpen] = useState(false)
 
   const handleSearch = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +48,7 @@ export function TopMenu({ query }: { query?: string }) {
 
   return (
     <div>
-      <div className="flex items-center px-12 bg-[#0D0D0D] py-3  gap-10">
+      <div className="flex items-center px-12 bg-[#0D0D0D] py-3  gap-5">
         <img src="/Tsu.png" alt="WSU Logo" className="w-10 h-10"
           onClick={handleHome}
         />
@@ -57,11 +61,43 @@ export function TopMenu({ query }: { query?: string }) {
           defaultValue={searchParams.get("urlId") || ""}
         />
 
-        <div className="flex ml-auto items-center gap-10 ">
-          <User className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" />
-          <ShoppingCart className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" onClick={handleCart} />
-          <Heart className="w-8 h-8 text-[#F5E8D8] hover:text-wsu" />
-          <div className="border rounded-full border-none rounded px-5 py-1 hover:bg-wsu transition-colors" >
+        <div className="flex ml-auto items-center gap-5">
+          <div className="relative flex items-center">
+            {/* Profile button toggleable */}
+            <button onClick={() => setOpen(!open)}>
+              {session?.user?.image
+                ? <img src={session.user.image} className="border-2 border-[#F5E8D8] hover:border-wsu rounded-full object-cover" />
+                : <User className="w-10 text-[#F5E8D8] hover:text-wsu" />
+              }
+            </button>
+
+            {/* selection menu ON TOP */}
+            {open && (
+              <div className="absolute top-full mt-2 w-48 bg-white shadow-lg z-99 p-2 rounded">
+                {session ? (
+                  <>
+                    <p className="text-sm text-secondary px-2 pb-2">{session.user?.email}</p>
+                    <button
+                      className="w-full text-left px-2 py-1 hover:bg-gray-100"
+                      onClick={() => signOut()}
+                    >
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="flex items-center w-full text-left px-2 py-1 hover:bg-gray-100"
+                    onClick={() => signIn("google")}
+                  >
+                    Sign in with Google
+                    <img src="/goooglelogo.jpg" alt="Google Logo" className="w-5 h-5 inline ml-2" />
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+          <ShoppingCart className="w-10 text-[#F5E8D8] hover:text-wsu" onClick={handleCart} />
+          <div className="border rounded-full border-none rounded py-1 hover:bg-wsu transition-colors" >
             <ThemeSwitch />
           </div>
         </div>
