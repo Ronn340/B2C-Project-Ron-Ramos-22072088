@@ -1,4 +1,5 @@
 import { test as setup } from "@playwright/test";
+import { client } from "@repo/db/client";
 import fs from "fs";
 
 // //////////////////////////////////////
@@ -9,12 +10,12 @@ import fs from "fs";
 setup(
     "authenticate",
   async ({ page, playwright }) => {
-    const authFile = ".auth/user.json";
+    const authFile = ".auth/user.json";  
     const content = {
       cookies: [
         {
-          name: "userId",
-          value: "user-123",
+          name: "authjs.session-token",
+          value: "test-session-token",
           domain: "localhost",
           secure: false,
           expires: -1,

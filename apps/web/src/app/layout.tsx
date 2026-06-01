@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import { ThemeProvider, type Theme } from "../components/Themes/ThemeContext";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,9 +31,11 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme={theme}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider initialTheme={theme}>
-        {children}
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider initialTheme={theme}>
+            {children}
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
