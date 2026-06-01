@@ -20,6 +20,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       COURSE_ID: full-stack-development-comp3036-2026
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
       NEXT_PUBLIC_URL: http://localhost:3001
       
 
