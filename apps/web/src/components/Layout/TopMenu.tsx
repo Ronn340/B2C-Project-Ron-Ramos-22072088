@@ -5,7 +5,7 @@ import ThemeSwitch from "../Themes/ThemeSwitcher";
 import { Search } from "lucide-react";
 import { FilterBar } from "../Menu/FilterBar";
 import { toUrlPath } from "@repo/utils/url";
-import { ShoppingCart, User, Heart } from "lucide-react";
+import { ShoppingCart, User, History } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -61,7 +61,7 @@ export function TopMenu({ query }: { query?: string }) {
           defaultValue={searchParams.get("urlId") || ""}
         />
 
-        <div className="flex ml-auto items-center gap-5">
+        <div className="flex mr-auto items-center gap-10">
           <div className="relative flex items-center">
             {/* Profile button toggleable */}
             <button onClick={() => setOpen(!open)}>
@@ -98,6 +98,7 @@ export function TopMenu({ query }: { query?: string }) {
             )}
           </div>
           <ShoppingCart className="w-10 text-[#F5E8D8] hover:text-wsu" onClick={handleCart} />
+          <History className="w-10 text-[#F5E8D8] hover:text-wsu" onClick={() => router.push("/orders")} />
           <div className="border rounded-full border-none rounded py-1 hover:bg-wsu transition-colors" >
             <ThemeSwitch />
           </div>

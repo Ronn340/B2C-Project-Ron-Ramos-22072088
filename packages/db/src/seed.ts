@@ -6,11 +6,15 @@ export async function seed() {
   // TODO: Uncomment below once you set up Prisma and loaded data to your database
   console.log("🌱 Seeding data");
 
-  await client.db.productImage.deleteMany();  //Collapse foreign key relationships FIRST
-  await client.db.product.deleteMany();       //Then delete
-
-  await client.db.cartItem.deleteMany();      //Collapse foreign key relationships FIRST
-  await client.db.cart.deleteMany();          //Then delete
+  await client.db.orderItem.deleteMany();
+  await client.db.order.deleteMany();
+  await client.db.cartItem.deleteMany();
+  await client.db.cart.deleteMany();
+  await client.db.session.deleteMany();
+  await client.db.account.deleteMany();
+  await client.db.user.deleteMany();
+  await client.db.productImage.deleteMany();
+  await client.db.product.deleteMany();
 
   //Create products - main table
   for (const p of products) {
@@ -45,13 +49,6 @@ export async function seed() {
       }
     })
   }
-
-  // Delete in correct FK order
-  await client.db.session.deleteMany();
-  await client.db.account.deleteMany();
-  await client.db.cartItem.deleteMany();
-  await client.db.cart.deleteMany();
-  await client.db.user.deleteMany();
 
   // Create a user and session for testing
   await client.db.user.create({

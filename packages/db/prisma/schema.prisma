@@ -27,6 +27,7 @@ model Product {
   createdAt   DateTime       @default(now())
   images      ProductImage[] //1-Product -> x_amount-images (images stored in another table)
   cartItems   CartItem[] //1-Product -> x_amount-cartItems (products can be in multiple carts)
+  orderItems  OrderItem[] //1-Product -> x_amount-orderItems (products can be in multiple orders)
 }
 
 model ProductImage {
@@ -46,25 +47,26 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   cart      Cart?
-  accounts   Account[]
-  sessions   Session[]
+  accounts  Account[]
+  sessions  Session[]
+  orders    Order[]
 }
 
 model Account {
-  id String @id @default(cuid())
-  userId String 
-  type String
-  provider String
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
   providerAccountId String
-  refresh_token String?
-  access_token String?
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String?
-  session_state String?
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -72,10 +74,10 @@ model Account {
 }
 
 model Session {
-  id String @id @default(cuid())
-  sessionToken String @unique
-  userId String
-  expires DateTime
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -103,4 +105,29 @@ model CartItem {
   cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   @@unique([cartId, productId]) //Ensures one entry per product in the cart
+}
+
+//Purchase history schemas starting from here
+model Order {
+  id              String   @id @default(cuid())
+  userId          String
+  totalAmount     Float
+  status          String   @default("completed")
+  stripeSessionId String   @unique  //ENSURE one order per stripe session - stop from refreshing call duplicate
+  createdAt       DateTime @default(now())
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+}
+
+model OrderItem {
+  id              String @id @default(cuid())
+  orderId         String
+  productId       Int
+  quantity        Int
+  priceAtPurchase Float
+  name            String
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 }

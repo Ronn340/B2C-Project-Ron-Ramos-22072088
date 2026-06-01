@@ -29,16 +29,39 @@ test.describe("PAYMENT CHECKOUT", () => {
     });
     //Test that the success page properly renders  
     test("Success page shows payment confirmation", async ({ page }) => {
-        await page.goto("/checkout/success");
+        await page.route("/api/order", async (route) => {
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({ order: { id: "test-session-id" } })
+            });
+        });
+        await page.goto("/checkout/success?session_id=test-session-id");
         await expect(page.getByText("Payment Successful!")).toBeVisible();
         await expect(page.getByRole("button", { name: "Continue Shopping" })).toBeVisible();
     });
 
     //Test that the 'go back to shopping' button works
     test("Go back to shopping redirects back to home page", async ({ page }) => {
-        await page.goto("/checkout/success");
+        await page.route("/api/order", async (route) => {
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({ order: { id: "test-session-id" } })
+            });
+        });
+
+        await page.goto("/checkout/success?session_id=test-session-id");
         await page.getByRole("button", { name: "Continue Shopping" }).click();
         await expect(page).toHaveURL("/");
     });
+
+    test("Tampering sessionID avoids skipping payment", async ({ page }) => {
+        await page.goto("/checkout/success?session_id=invalid-session-id");
+        await expect(page.getByText("Payment Successful!")).not.toBeVisible();
+        await expect(page.getByText("Uh oh, Something went wrong!")).toBeVisible();
+        await page.getByRole("button", { name: "Go Home" }).click();
+        await expect(page).toHaveURL("/");
+    })
 
 });

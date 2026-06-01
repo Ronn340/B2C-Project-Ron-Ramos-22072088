@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
                 name: item.product.name,
                 images: [item.product.imageUrl],
             },
-            unit_amount: item.product.price * 100, // Stripe expects unit in cents
+            unit_amount: parseFloat((item.product.price * 100).toFixed(2)), // Stripe expects unit in cents
         },
         quantity: item.quantity,
     }));
@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success`,
+        //Note: session_id is passed to be used in saving order. <mainly to stop duplicates>
+        success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_URL}/cart`,
     });
     return Response.json({ url: session.url });
