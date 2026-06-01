@@ -7,7 +7,13 @@ import App from "next/app";
 export default async function OrdersPage() {
     const userId = await getCurrentUserId();
     if (!userId) {
-        return <div>Please log in to view your orders.</div>;
+        return (
+            <AppLayout>
+                <div className="flex items-center justify-center px-5 py-5 ">
+                    <span className="text-xl font-bold text-primary p-3 border-y border-wsu">Log-in to View Orders</span>
+                </div>
+            </AppLayout>
+        );
     }
 
     const orders = await client.db.order.findMany({
