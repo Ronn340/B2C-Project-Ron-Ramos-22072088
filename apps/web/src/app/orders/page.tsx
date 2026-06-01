@@ -22,6 +22,16 @@ export default async function OrdersPage() {
         orderBy: { createdAt: "desc" }
     })
 
+    if (orders.length === 0) {
+        return (
+            <AppLayout>
+                <div className="flex items-center justify-center px-5 py-5 ">
+                    <span className="text-xl font-bold text-primary p-3 border-y border-wsu">No orders found.</span>
+                </div>
+            </AppLayout>
+        );
+    }   
+
     return (
         <AppLayout>
             <div className="mx-15">
