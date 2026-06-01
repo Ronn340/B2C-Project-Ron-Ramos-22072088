@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
                 name: item.product.name,
                 images: [item.product.imageUrl],
             },
-            unit_amount: item.product.price * 100, // Stripe expects unit in cents
+            unit_amount: parseFloat((item.product.price * 100).toFixed(2)), // Stripe expects unit in cents
         },
         quantity: item.quantity,
     }));
