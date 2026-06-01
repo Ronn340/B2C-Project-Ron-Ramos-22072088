@@ -46,13 +46,26 @@ export async function seed() {
     })
   }
 
-  // Temporary free user
+  // Delete in correct FK order
+  await client.db.session.deleteMany();
+  await client.db.account.deleteMany();
+  await client.db.cartItem.deleteMany();
+  await client.db.cart.deleteMany();
   await client.db.user.deleteMany();
 
+  // Create a user and session for testing
   await client.db.user.create({
     data: {
       id: "user-123",
       email: "ron@test.com",
+    }
+  });
+
+  await client.db.session.create({
+    data: {
+      sessionToken: "test-session-token",
+      userId: "user-123",
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     }
   });
 
