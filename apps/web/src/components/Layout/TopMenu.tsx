@@ -20,7 +20,7 @@ function debounce<T extends (...args: Any[]) => Any>(fn: T, delay = 300) {
 export function TopMenu({ query }: { query?: string }) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false)
 
   const handleSearch = debounce(
@@ -65,9 +65,10 @@ export function TopMenu({ query }: { query?: string }) {
           <div className="relative flex items-center">
             {/* Profile button toggleable */}
             <button onClick={() => setOpen(!open)}>
-              {session?.user?.image
-                ? <img src={session.user.image} className="border-2 border-[#F5E8D8] hover:border-wsu rounded-full object-cover" />
-                : <User className="w-10 text-[#F5E8D8] hover:text-wsu" />
+              {status === "authenticated"
+                ? <img src={session?.user?.image ?? "./noProfile.jpg"} 
+                data-test-id="user-image" className="border-2 w-20 border-[#F5E8D8] hover:border-wsu rounded-full object-cover" />
+                : <User data-test-id="user-icon" className="w-10 text-[#F5E8D8] hover:text-wsu" />
               }
             </button>
 
