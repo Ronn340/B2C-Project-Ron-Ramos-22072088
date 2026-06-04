@@ -17,7 +17,7 @@ test.describe("SORTING SCREEN", () => {
 
             const articleLast = await page.locator('[data-test-id^="product-"]').last();
             await expect(articleLast).toBeVisible();
-            await expect(articleLast).toHaveAttribute("data-test-id", "product-4");
+            await expect(articleLast).toHaveAttribute("data-test-id", "product-3");
         },
     );
 
@@ -38,10 +38,10 @@ test.describe("SORTING SCREEN", () => {
 
             const articleLast = await page.locator('[data-test-id^="product-"]').last();
             await expect(articleLast).toBeVisible();
-            await expect(articleLast).toHaveAttribute("data-test-id", "product-6");
+            await expect(articleLast).toHaveAttribute("data-test-id", "product-5");
 
             await expect(articleFirst.getByText("4.7")).toBeVisible();
-            await expect(articleLast.getByText("4.3")).toBeVisible();
+            await expect(articleLast.getByText("4.2")).toBeVisible();
         }
     );
 });

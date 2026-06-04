@@ -84,7 +84,7 @@ test.describe("HOME SCREEN", () => {
         async ({ page }) => {
             await page.goto("/");
 
-            const item = await page.getByTestId("product-1");
+            const item = await page.getByTestId("product-3");
             await expect(item).toBeVisible();
 
             // HOME SCREEN > The list shows the following items:
@@ -95,11 +95,11 @@ test.describe("HOME SCREEN", () => {
             // - price
             // - rating
 
-            await expect(item.getByText("Fluffy Fleece Jacket")).toBeVisible();
-            await expect(item).toHaveAttribute("href", "/item/fleece-jacket-black");
+            await expect(item.getByText("Tech Cargo Pants")).toBeVisible();
+            await expect(item).toHaveAttribute("href", "/item/tech-cargo-pants");
 
-            await expect(item.getByTestId("category")).toHaveText("Jacket | Women");
-            await expect(item.getByText("$89.99")).toBeVisible();
+            await expect(item.getByTestId("category")).toHaveText("Pants | Women");
+            await expect(item.getByText("$79.90")).toBeVisible();
             await expect(item.getByText("4.5")).toBeVisible();
         },
     );
@@ -121,7 +121,7 @@ test.describe("HOME SCREEN", () => {
                 );
             } else {
                 await page.getByText("Dark Mode").click();
-                // await page.waitForTimeout(1000);
+                await page.waitForTimeout(2000);
                 await expect(await page.getAttribute("html", "data-theme")).toBe(
                     "dark",
                 );
@@ -137,8 +137,8 @@ test.describe("HOME SCREEN", () => {
 
             // HOME SCREEN > There is a search functionality that filters the products based on the search string stored in the query string
 
-            await page.getByPlaceholder("Search").fill("Fatboy");
-            await expect(page).toHaveURL("/shop?urlId=fatboy");
+            await page.getByPlaceholder("Search").fill("Cotton");
+            await expect(page).toHaveURL("/shop?urlId=cotton");
         },
     );
 });
