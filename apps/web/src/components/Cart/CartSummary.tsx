@@ -1,14 +1,17 @@
 "use client";
 
 import { CartItem, Product } from "@prisma/client";
+import { useState } from "react";
 
 type CartItemWithProduct = CartItem & { product: Product };
 
 export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
     const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+    const [loading, setLoading] = useState(false);
 
     const handleCheckout = async () => {
+        setLoading(true);
         const response = await fetch("/api/checkout", {
             method: "POST",
             headers: {
@@ -39,10 +42,10 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
                 <span className="text-xs text-textSecondary">Shipping to be calculated at checkout.</span>
             </div>
             <button 
-                className="w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors"
+                className={`${ loading ? "w-full mt-15 bg-gray-300 text-black py-2 rounded-full" : "w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors" }`}
                 onClick={handleCheckout}
             >
-                Proceed to Checkout
+                {loading ? "Redirecting..." : "Proceed to Checkout"}
             </button>
         </div>
     );
