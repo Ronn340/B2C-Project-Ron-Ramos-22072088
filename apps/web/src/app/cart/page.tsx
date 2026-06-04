@@ -17,8 +17,16 @@ export default async function CartPage() {
 
     const cart = await client.db.cart.findUnique({
         where: { userId },
+
         include: {
-            items: { include: { product: true } }
+            items: {
+                orderBy: {
+                    product: {
+                       name: "asc" 
+                    }
+                },
+                include: { product: true }
+            }
         }
     });
 
