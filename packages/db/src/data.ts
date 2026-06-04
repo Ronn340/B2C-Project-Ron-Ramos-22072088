@@ -104,7 +104,7 @@ export const products: Product[] = [
     articleType: "Shirt",
     gender: "Men",
     sizes: "XS,S,M,L,XL,XXL",
-    rating: 4.3,
+    rating: 4.2,
     imageUrl: "https://images.unsplash.com/photo-1633756887168-44c79bddf8b3?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description: "Oversized merino wool shirt with a relaxed drape and dropped shoulders. Naturally breathable and temperature-regulating for year-round wear.",
     colour: "Black",
