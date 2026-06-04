@@ -23,7 +23,7 @@ export function ProductListItem({ product }: { product: Product }) {
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-72 object-cover"
+            className="w-full h-110 object-cover"
           />
           {outOfStock && (
             <span className="absolute top-2 left-2 bg-black text-white text-s px-2 py-1 rounded">
