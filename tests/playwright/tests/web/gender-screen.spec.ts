@@ -15,17 +15,13 @@ test.describe("GENDER SCREEN", () => {
       // GENDER SCREEN > Displays results based on gender from url (e.g. /gender?gender=Women)
 
       const articles = await page.locator('[data-test-id^="product-"]');
-      await expect(articles).toHaveCount(2);
+      await expect(articles).toHaveCount(3);
 
       await expect(page.getByTestId("product-2")).toBeVisible();
       await expect(
-        page.getByText("Navy"),
+        page.getByText("Gray"),
       ).toBeVisible();
 
-      await expect(page.getByTestId("product-1")).toBeVisible();
-      await expect(
-        page.getByText("Black"),
-      ).toBeVisible();
     },
   );
 

@@ -28,23 +28,23 @@ test.describe("CART SCREEN", () => {
     test("Add item to cart from detail page", async ({ page }) => {
         page.on("dialog", dialog => dialog.accept());
 
-        await page.goto("/item/oversized-cotton-tee-black");
+        await page.goto("/item/cotton-sweater-gray");
         const selectSize = page.getByTestId("size-button-S");
         await selectSize.click();
         const addToCartButton = page.getByTestId("add-to-cart-button");
         addToCartButton.click();
         await page.waitForTimeout(3000);
         await page.goto("/cart");
-        await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
+        await expect(page.getByText("Cotton Sweater")).toBeVisible();
         await expect(page.getByTestId("quantity")).toHaveText("1");
-        await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $29.90");
+        await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $59.90");
     });
 
     //Test multiple items to add it cart at once
     test("Add multiple items at once to cart", async ({ page }) => {
         page.on("dialog", dialog => dialog.accept());
 
-        await page.goto("/item/oversized-cotton-tee-black");
+        await page.goto("/item/cotton-sweater-gray");
         const selectSize = page.getByTestId("size-button-S");
         await selectSize.click();
         const plusButton = page.getByTestId("quantity-increment");
@@ -54,15 +54,15 @@ test.describe("CART SCREEN", () => {
         await addToCartButton.click();
         await page.waitForTimeout(3000);
         await page.goto("/cart");
-        await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
+        await expect(page.getByText("Cotton Sweater")).toBeVisible();
         await expect(page.getByTestId("quantity")).toHaveText("3");
-        await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $89.70");
+        await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $179.70");
     });
 
     test.describe("Update Cart Item Quantity", () => {
         test.beforeEach(async ({ request }) => {
             await request.post("/api/cart", {
-                data: { productId: 3, quantity: 2 },
+                data: { productId: 2, quantity: 2 },
                 headers: { "Content-Type": "application/json" }
             });
         });
@@ -74,7 +74,7 @@ test.describe("CART SCREEN", () => {
             await incrementButton.click();
             await page.waitForTimeout(3000);
             await expect(page.getByTestId("quantity")).toHaveText("3");
-            await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $149.70");
+            await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $179.70");
 
         });
 
@@ -85,7 +85,7 @@ test.describe("CART SCREEN", () => {
             await decrementButton.click();
             await page.waitForTimeout(3000);
             await expect(page.getByTestId("quantity")).toHaveText("1");
-            await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $49.90");
+            await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $59.90");
         });
 
         //Test decrement disabled to be stuck at 1

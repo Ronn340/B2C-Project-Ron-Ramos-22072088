@@ -101,7 +101,7 @@ export const products: Product[] = [
     id: 5,
     urlId: "oversized-merino-shirt-black",
     name: "Oversized Merino Shirt",
-    articleType: "Shirt",
+    articleType: "T-Shirt",
     gender: "Men",
     sizes: "XS,S,M,L,XL,XXL",
     rating: 4.2,

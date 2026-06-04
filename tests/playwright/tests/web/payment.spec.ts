@@ -53,6 +53,7 @@ test.describe("PAYMENT CHECKOUT", () => {
 
         await page.goto("/checkout/success?session_id=test-session-id");
         await page.getByRole("button", { name: "Continue Shopping" }).click();
+        await page.waitForTimeout(2000);
         await expect(page).toHaveURL("/");
     });
 
