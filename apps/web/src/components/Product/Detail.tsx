@@ -8,10 +8,12 @@ export function ProductDetail({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState("");
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
   const sizes = product.sizes.split(",");
 
   //Add to cart API call
   async function addToCart(productId: number) {
+    setLoading(true);
     const res = await fetch("/api/cart", {
       method: "POST",
       headers: {
@@ -22,8 +24,10 @@ export function ProductDetail({ product }: { product: Product }) {
 
     if (res.ok) {
       alert("Product added to cart!");
+      setLoading(false);
     } else if (res.status === 401) {
       alert("Please log in to add items to your cart.");
+      setLoading(false);
     }
   }
 
@@ -82,20 +86,20 @@ export function ProductDetail({ product }: { product: Product }) {
             +
           </button>
         </div>
+
         <button
-          disabled={!selectedSize || product.stock === 0}
+          disabled={!selectedSize || product.stock === 0 || loading}
           data-test-id="add-to-cart-button"
-          className={`${!selectedSize || product.stock === 0 ?
+          className={`${!selectedSize || product.stock === 0 || loading ?
             'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed hover:disabled:bg-gray-300' :
             'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
-
           onClick={async () => {
             if (selectedSize && product.stock > 0) {
               await addToCart(product.id);
             }
           }}
         >
-          {product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
+          {loading ? "Adding to cart, please wait..." : product.stock === 0 ? "Out of Stock" : !selectedSize ? "Select a Size" : "Add to Cart"}
         </button>
       </div>
 
