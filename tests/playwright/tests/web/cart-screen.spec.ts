@@ -32,7 +32,8 @@ test.describe("CART SCREEN", () => {
         const selectSize = page.getByTestId("size-button-S");
         await selectSize.click();
         const addToCartButton = page.getByTestId("add-to-cart-button");
-        await addToCartButton.click();
+        addToCartButton.click();
+        await page.waitForTimeout(3000);
         await page.goto("/cart");
         await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
         await expect(page.getByTestId("quantity")).toHaveText("1");
@@ -51,6 +52,7 @@ test.describe("CART SCREEN", () => {
         await plusButton.click();
         const addToCartButton = page.getByTestId("add-to-cart-button");
         await addToCartButton.click();
+        await page.waitForTimeout(3000);
         await page.goto("/cart");
         await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
         await expect(page.getByTestId("quantity")).toHaveText("3");
@@ -70,6 +72,7 @@ test.describe("CART SCREEN", () => {
             await page.goto("/cart");
             const incrementButton = page.getByTestId("quantity-increment");
             await incrementButton.click();
+            await page.waitForTimeout(3000);
             await expect(page.getByTestId("quantity")).toHaveText("3");
             await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $149.70");
 
@@ -80,6 +83,7 @@ test.describe("CART SCREEN", () => {
             await page.goto("/cart");
             const decrementButton = page.getByTestId("quantity-decrement");
             await decrementButton.click();
+            await page.waitForTimeout(3000);
             await expect(page.getByTestId("quantity")).toHaveText("1");
             await expect(page.getByTestId("subtotal")).toHaveText("Subtotal: $49.90");
         });
@@ -89,6 +93,7 @@ test.describe("CART SCREEN", () => {
             await page.goto("/cart");
             const decrementButton = page.getByTestId("quantity-decrement");
             await decrementButton.click();
+            await page.waitForTimeout(3000);
             await expect(page.getByTestId("quantity")).toHaveText("1");
             await expect(decrementButton).toBeDisabled();
         });
@@ -98,6 +103,7 @@ test.describe("CART SCREEN", () => {
             await page.goto("/cart");
             const removeButton = page.getByText("Remove");
             await removeButton.click();
+            await page.waitForTimeout(3000);
             await expect(page.getByText("No items in your cart")).toBeVisible();
         });
     });
