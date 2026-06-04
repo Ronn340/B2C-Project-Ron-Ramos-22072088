@@ -22,6 +22,8 @@ export function ProductDetail({ product }: { product: Product }) {
 
     if (res.ok) {
       alert("Product added to cart!");
+    } else if (res.status === 401) {
+      alert("Please log in to add items to your cart.");
     }
   }
 
