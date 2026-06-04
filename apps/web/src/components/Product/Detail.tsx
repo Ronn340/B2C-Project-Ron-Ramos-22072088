@@ -74,11 +74,11 @@ export function ProductDetail({ product }: { product: Product }) {
       </div>
       <div className="grid grid-cols-[1fr_3fr] gap-4 mt-4">
         <div className="flex items-center justify-between gap-2 border rounded-lg bg-textSecondary border-primary my-2">
-          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+          <button className={`${quantity == 1 ? "bg-gray-300 cursor-not-allowed text-gray-500flex text-xl px-5 py-2 items-center rounded-lg" : "flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"}`} disabled={quantity == 1}  onClick={() => setQuantity(Math.max(1, quantity - 1))}>
             -
           </button>
           <span>{quantity}</span>
-          <button className="flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"  data-test-id="quantity-increment" onClick={() => setQuantity(quantity + 1)}>
+          <button className={`${quantity == 10 ? "bg-gray-300 cursor-not-allowed text-gray-500flex text-xl px-5 py-2 items-center rounded-lg" : "flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"}`} disabled={quantity == 10} data-test-id="quantity-increment" onClick={() => setQuantity(quantity + 1)}>
             +
           </button>
         </div>
@@ -86,8 +86,9 @@ export function ProductDetail({ product }: { product: Product }) {
           disabled={!selectedSize || product.stock === 0}
           data-test-id="add-to-cart-button"
           className={`${!selectedSize || product.stock === 0 ?
-            'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed' :
+            'bg-gray-300 text-secondary py-2 px-4 rounded-full cursor-not-allowed hover:disabled:bg-gray-300' :
             'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
+
           onClick={async () => {
             if (selectedSize && product.stock > 0) {
               await addToCart(product.id);
