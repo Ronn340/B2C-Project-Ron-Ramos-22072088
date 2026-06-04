@@ -24,11 +24,14 @@ export function ProductDetail({ product }: { product: Product }) {
 
     if (res.ok) {
       alert("Product added to cart!");
-      setLoading(false);
     } else if (res.status === 401) {
       alert("Please log in to add items to your cart.");
-      setLoading(false);
+    } else if (res.status === 400) {
+      alert("Quantity exceeds maximum limit.");
+    } else {
+      alert("Failed to add product to cart. Please try again.");
     }
+    setLoading(false);
   }
 
   return <div className="grid grid-cols-2 gap-4 mt-8" data-test-id={`product-${product.id}`}>
@@ -78,7 +81,7 @@ export function ProductDetail({ product }: { product: Product }) {
       </div>
       <div className="grid grid-cols-[1fr_3fr] gap-4 mt-4">
         <div className="flex items-center justify-between gap-2 border rounded-lg bg-textSecondary border-primary my-2">
-          <button className={`${quantity == 1 ? "bg-gray-300 cursor-not-allowed text-gray-500flex text-xl px-5 py-2 items-center rounded-lg" : "flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"}`} disabled={quantity == 1}  onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+          <button className={`${quantity == 1 ? "bg-gray-300 cursor-not-allowed text-gray-500flex text-xl px-5 py-2 items-center rounded-lg" : "flex text-xl px-5 py-2 items-center hover:bg-wsu rounded-lg"}`} disabled={quantity == 1} onClick={() => setQuantity(Math.max(1, quantity - 1))}>
             -
           </button>
           <span>{quantity}</span>

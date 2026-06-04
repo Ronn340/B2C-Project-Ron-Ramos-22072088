@@ -7,10 +7,8 @@ type CartItemWithProduct = CartItem & { product: Product };
 //"-" and "+" button operations to API
 export function CartListItem({ item }: { item: CartItemWithProduct }) {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
 
     async function addToCart(productId: number, action: String) {
-        setLoading(true);
         const res = await fetch("/api/cart",
             {
                 method: "PATCH",
@@ -23,12 +21,10 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
             alert("Failed to update cart");
         } else {
             router.refresh();
-            setLoading(false);
         }
     }
 
     async function removeFromCart(productId: number) {
-        setLoading(true);
         const res = await fetch("/api/cart",
             {
                 method: "DELETE",
@@ -41,7 +37,6 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
             alert("Failed to remove item from cart");
         } else {
             router.refresh();
-            setLoading(false);
         }
     }
 
@@ -61,16 +56,16 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                 <div className="flex items-center gap-2 border rounded-lg w-fit bg-textSecondary border-primary my-2">
                     <button
 
-                        disabled={item.quantity === 1 || loading}
-                        className={`${item.quantity === 1 || loading ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
+                        disabled={item.quantity <= 1}
+                        className={`${item.quantity <= 1 ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
                         onClick={async () => await addToCart(item.product.id, "subtract")}
                         data-test-id="quantity-decrement">
                         -
                     </button>
                     <span data-test-id="quantity">{item.quantity}</span>
                     <button
-                        disabled={item.quantity === 10 || loading}
-                        className={`${item.quantity === 10 || loading ? "w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
+                        disabled={item.quantity >= 10}
+                        className={`${item.quantity >= 10 ? "w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
                         onClick={async () => await addToCart(item.product.id, "add")}
                         data-test-id="quantity-increment">
                         +

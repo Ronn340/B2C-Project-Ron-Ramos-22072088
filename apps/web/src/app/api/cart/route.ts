@@ -16,6 +16,20 @@ export async function POST(req: NextRequest) {
         update: {}              //Do nothing if there is one
     })
 
+    const existingCartItem = await client.db.cartItem.findUnique({
+        where: {
+            cartId_productId: {
+                cartId: cart.id,
+                productId
+            }
+        }
+    });
+
+    if (existingCartItem?.quantity + quantity > 10) {
+        return NextResponse.json({ message: "Quantity exceeds maximum limit" }, { status: 400 });
+    }
+
+
     await client.db.cartItem.upsert({
         where: {
             cartId_productId: {
@@ -60,22 +74,19 @@ export async function PATCH(req: NextRequest) {
     if (!cartItem)
         return NextResponse.json({ message: "Item not found in cart" }, { status: 404 });
 
-
     //End at performing the update
     if (action === "add") {
         await client.db.cartItem.update({
             where: { id: cartItem.id },
-            data: { quantity: { increment: 1 } }
+            data: { quantity: Math.min(cartItem.quantity + 1, 10) }
         });
     } else if (action === "subtract") {
-        if (cartItem.quantity > 1) {
-            await client.db.cartItem.update({
-                where: { id: cartItem.id },
-                data: { quantity: { decrement: 1 } }
-            });
-        }
+        await client.db.cartItem.update({
+            where: { id: cartItem.id },
+            data: { quantity: Math.max(cartItem.quantity - 1, 1) }
+        });
     }
-        
+
     return NextResponse.json({ ok: true });
 }
 
