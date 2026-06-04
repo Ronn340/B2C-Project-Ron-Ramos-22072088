@@ -69,7 +69,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
                     </button>
                     <span data-test-id="quantity">{item.quantity}</span>
                     <button
-                        disabled={loading}
+                        disabled={item.quantity === 10 || loading}
                         className={`${loading ? "w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
                         onClick={async () => await addToCart(item.product.id, "add")}
                         data-test-id="quantity-increment">
