@@ -29,14 +29,16 @@ NOTE: Endpoints is managed internally and we only used it to call the signIn/Out
 5. Google accepts and sends back the user's details to the website
 6. Prisma Adapter saves in all user details w/ session records (Neon DB)
 
-**Provide:** AUTH_GOOGLE_ID + AUTH_GOOGLE_SECRET
+**Provide:** _AUTH_GOOGLE_ID_ + _AUTH_GOOGLE_SECRET_
 
-**Returns:** 
+**Sets:** 
+```json
     Cookies: {
         __Host-authjs.csrf-token        - tampering security
         __Secure-authjs.callback-url    - success redirection
         __Secure-authjs.session-token   - session managing value
     }
+```
 
 ### Cart Endpoints
 
@@ -289,36 +291,108 @@ Payment incomplete OR invalid stripe sessionId OR session order already exists O
 
 #### `GET /api/seed`
 
-Resets and populates the database to a clean start.
-
-**Note: IMPORTANT**
-- This runs and cleans even during Continuous Integration meaning every test resets the **source** database
+Resets and populates the database to a clean start. Also checking if its in a test environment _E2E_ to run. Production blocks seed function.
 
 **Authenticated:** Not Required 
 
 **Responses:**
 - Status `200 OK`
 Database seeded successfully
-- Status
+- Status `501 Not implemented`
+Blocked due to being a production environment
 
-#### ``
-lorem ipsum
+**200 Response**
+```json
+{ "message": "Seeded" }
+```
 
-**Authenticated:** 
-
-**Request body:**
+***501 Response**
 ```json
 {
-
+"Not Available"
 }
 ```
 
-**Parameters:**
+**NOTE:** Do **NOT** have 'E2E' variable in production or else it will let random users to reset clean database
 
-**Responses:**
+## Data Models
 
-**200 Response:**
+### Product
+```typescript
+model Product {
+  id          Int            @id @default(autoincrement())
+  urlId       String         @unique
+  name        String
+  articleType String
+  gender      String
+  sizes       String //Comma separated string
+  rating      Float //Static number
+  imageUrl    String
+  description String
+  colour      String
+  price       Float
+  stock       Int            @default(0)
+  active      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  images      ProductImage[] //1-Product -> x_amount-images (images stored in another table)
+  cartItems   CartItem[] //1-Product -> x_amount-cartItems (products can be in multiple carts)
+  orderItems  OrderItem[] //1-Product -> x_amount-orderItems (products can be in multiple orders)
+}
+```
+### CartItem
+```typescript
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-**404 Response:**
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
+  @@unique([cartId, productId]) //Ensures one entry per product in the cart
+}
+```
 
+### Order
+```typescript
+model Order {
+  id              String   @id @default(cuid())
+  userId          String
+  totalAmount     Float
+  status          String   @default("completed")
+  stripeSessionId String   @unique  //ENSURE one order per stripe session - stop from refreshing call duplicate
+  createdAt       DateTime @default(now())
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+}
+```
+
+### OrderItem
+```typescript
+model OrderItem {
+  id              String @id @default(cuid())
+  orderId         String
+  productId       Int
+  quantity        Int
+  priceAtPurchase Float
+  name            String
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+```
+
+## Environment Variables
+```json
+DATABASE_URL            - Neon Connection URL
+STRIPE_SECRET_KEY       - Stripe mock payment secret key
+NEXT_PUBLIC_URL         - Vercel Public URL
+AUTH_GOOGLE_ID          - Created google cloud client ID
+AUTH_GOOGLE_SECRET      - Created google cloud secret ID
+AUTH_SECRET             - Encryption reference
+E2E                     - Set to true if production otherwise delete
+```
