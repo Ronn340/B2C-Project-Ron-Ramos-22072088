@@ -99,10 +99,51 @@ pnpm prisma generate
 turbo dev
 ```
 - Populate the database by running /api/seed
+
 e.g. https:/localhost:3001/api/seed
 
+## Running Tests
 
+### E2E Tests (Playwright)
+**Note:** Run the dev server first
+```bash
+cd tests/playwright
 
+# Run all tests
+pnpm playwright test
+```
 
- 
- 
+### Unit Tests (Vitest)
+
+```bash
+cd apps/web
+pnpm test
+```
+---
+
+## Vercel Setup
+
+1. Go to https://vercel.com/
+2. Create a project
+3. link with github repository https://github.com/Ronn340/B2C-Project-Ron-Ramos-22072088
+
+### Vercel Environment Variables
+```env
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+AUTH_GOOGLE_ID=your-google-client-id
+AUTH_GOOGLE_SECRET=your-google-client-secret
+NEXTAUTH_SECRET=any-random-string
+```
+
+4. Deploy
+5. Create a Neon database in vercel dashboard and add the _DATABASE_URL_
+```env
+DATABASE_URL=postgres://...
+```
+
+6. Define Google Oauth Setup
+
+In [Google Cloud Console](https://console.cloud.google.com):
+- Add your Vercel URL to **Authorized JavaScript Origins**
+- Add `https://your-vercel-url.vercel.app/api/auth/callback/google` to **Authorized Redirect URIs**
