@@ -36,7 +36,9 @@ export async function POST(req: NextRequest) {
         include: { items: { include: { product: true } } }
     });
 
-    if (!cart || cart.items.length === 0) {
+    if (!cart) {
+        return Response.json({ message: "Cart not found" }, { status: 404 });
+    } else if (cart.items.length === 0) {
         return Response.json({ message: "Cart is empty" }, { status: 400 });
     }
 
