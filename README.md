@@ -58,15 +58,50 @@ AUTH_GOOGLE_SECRET=your-google-client-secret
 NEXTAUTH_SECRET=any-random-string
 ```
  
-Stripe keys - obtainable by creating a stripe account at http://stripe.com/au
-Google keys - obtainable by creating a web client at https://console.cloud.google.com/
+1. Stripe keys - obtainable by creating a stripe account at http://stripe.com/au
+2. Google keys - obtainable by creating a web client at https://console.cloud.google.com/
 
 Create `packages/db/.env`:
  
 ```env
 DATABASE_URL="file:./dev.db"
 ```
-**IMPORTANT:** If you are proceeding to use "file:.dev.db" please do:
+**IMPORTANT!:** If you are proceeding to use locally set database _"file:.dev.db"_ please do the following:
+
+At schema.prisma in packages/db/:
+-  Set provider to "sqlite"
+```
+# From
+datasource db {
+  provider = "postgresql"
+  url      = env(DATABASE_URL)
+}
+# To
+datasource db {
+  provider = "sqlite"
+  url      = env(DATABASE_URL)
+}
+```
+
+### Setup the database
+```bash
+# Navigate to the database folder
+cd packages/db
+
+# Push the database schema
+pnpm prisma db push
+pnpm prisma generate
+```
+
+### Run the App
+```bash
+# Run Command
+turbo dev
+```
+- Populate the database by running /api/seed
+e.g. https:/localhost:3001/api/seed
+
+
 
 
  
