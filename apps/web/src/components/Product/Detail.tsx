@@ -69,11 +69,17 @@ export function ProductDetail({ product }: { product: Product }) {
       <div className="flex flex-row gap-2 items-center">
         {product.sizeStocks.map((sizeStock) => (
           <button
+            disabled={sizeStock.stock === 0}
             key={sizeStock.size}
             onClick={() => setSelectedSize(sizeStock.size)}
             data-test-id={`size-button-${sizeStock.size}`}
-            className={`px-4 py-2 border rounded-md ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
+            className={`relative px-4 py-2 border rounded-md ${sizeStock.stock === 0 ? "cursor-not-allowed" : ""} ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
           >
+            {sizeStock.stock === 0 && (
+              <div className="absolute inset-0 overflow-hidden rounded-md">
+                <div className="absolute w-[140%] h-[1px] bg-primary top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45" />
+              </div>
+            )}
             {sizeStock.size}
           </button>
         ))}
