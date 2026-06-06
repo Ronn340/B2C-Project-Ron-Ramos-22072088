@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { Product, CartItem } from "@prisma/client";
+import { Product, Prisma } from "@prisma/client";
 import Stripe from "stripe";
 
 /* Logic for future reference:
@@ -13,17 +13,21 @@ import Stripe from "stripe";
     finally just use that session URL via window.location.href = url; to redirect
 */
 
-type CartItemWithProduct = CartItem & { product: Product };
+type CartItem = Prisma.CartItemGetPayload<{
+    include: { product: true; sizeStock: true }
+}>;
+
 export async function POST(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
     const { cartItems } = await req.json();
     //body should be cartItemsWithProduct[] - CartItem->Apppended_Product
 
-    const lineItems = cartItems.map((item: CartItemWithProduct) => ({
+    const lineItems = cartItems.map((item: CartItem) => ({
         price_data: {
             currency: "aud",
             product_data: {
                 name: item.product.name,
+                description: ` ${item.product.gender} ${item.sizeStock.size} - ${item.product.colour}`, 
                 images: [item.product.imageUrl],
             },
             unit_amount: parseFloat((item.product.price * 100).toFixed(2)), // Stripe expects unit in cents
