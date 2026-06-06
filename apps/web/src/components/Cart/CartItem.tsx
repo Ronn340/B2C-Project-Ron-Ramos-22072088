@@ -1,11 +1,13 @@
 "use client";
-import { CartItem, Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-type CartItemWithProduct = CartItem & { product: Product };
+type CartItem = Prisma.CartItemGetPayload<{
+    include: { product: true, sizeStock: true }
+}>;
 
 //"-" and "+" button operations to API
-export function CartListItem({ item }: { item: CartItemWithProduct }) {
+export function CartListItem({ item }: { item: CartItem }) {
     const router = useRouter();
 
     async function addToCart(productId: number, action: String) {
@@ -51,7 +53,7 @@ export function CartListItem({ item }: { item: CartItemWithProduct }) {
             <div className="flex flex-col w-3/4 pt-4">
                 <span className="text-base font-semibold text-primary">{item.product.name}</span>
                 <span className="text-sm text-gray-500 mt-1">Colour: {item.product.colour}</span>
-                <span className="text-sm text-gray-500">Size: Men S</span>
+                <span className="text-sm text-gray-500">Size: {item.product.gender} {item.sizeStock.size}</span>
                 <span className="text-lg font-bold text-primary mt-1">${item.product.price.toFixed(2)}</span>
                 <div className="flex items-center gap-2 border rounded-lg w-fit bg-textSecondary border-primary my-2">
                     <button
