@@ -14,6 +14,7 @@ export async function seed() {
   await client.db.account.deleteMany();
   await client.db.user.deleteMany();
   await client.db.productImage.deleteMany();
+  await client.db.sizeStock.deleteMany();
   await client.db.product.deleteMany();
 
   //Create products - main table
@@ -25,7 +26,6 @@ export async function seed() {
         name: p.name,
         articleType: p.articleType,
         gender: p.gender,
-        sizes: p.sizes,
         rating: p.rating,
         imageUrl: p.imageUrl,
         description: p.description,
@@ -49,6 +49,17 @@ export async function seed() {
       }
     })
   }
+
+  // Create size stocks - separation for stock management
+  await client.db.sizeStock.createMany({
+    data: [
+      { productId: 1, size: "XS", stock: 35 },
+      { productId: 1, size: "S", stock: 30 },
+      { productId: 1, size: "M", stock: 25 },
+      { productId: 1, size: "L", stock: 20 },
+      { productId: 1, size: "XL", stock: 15 },
+    ]
+  });
 
   // Create a user and session for testing
   await client.db.user.create({
