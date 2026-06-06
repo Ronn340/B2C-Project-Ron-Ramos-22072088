@@ -6,7 +6,7 @@ export default async function Home() {
 
   const products = await client.db.product.findMany({
     where: { active: true },
-    include: { images: true }, // Eager load related images
+    include: { images: true, sizeStocks: true }, // Eager load related images and size stocks
   });
 
   return (

@@ -1,6 +1,10 @@
-import type { Product } from "@repo/db/data";
+import type { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { Star } from "lucide-react";
+
+type Product = Prisma.ProductGetPayload<{
+  include: { images: true; sizeStocks: true }
+}>;
 
 export function ProductListItem({ product }: { product: Product }) {
 
@@ -10,7 +14,6 @@ export function ProductListItem({ product }: { product: Product }) {
   });
 
   const outOfStock = product.stock === 0;
-  const sizeList = product.sizes.split(",");
 
   return (
     <Link href={`/item/${product.urlId}`} data-test-id={`product-${product.id}`}>
@@ -45,13 +48,13 @@ export function ProductListItem({ product }: { product: Product }) {
 
           {/* Sizes */}
           <div className="flex gap-1 flex-wrap">
-            {sizeList.map((size) => (
+            {product.sizeStocks.map((sizeStock) => (
               <span
-                key={size}
-                data-testid={`size-${size}`}
+                key={sizeStock.size}
+                data-testid={`size-${sizeStock.size}`}
                 className="text-xs text-gray-600 border border-gray-300 px-2 py-0.5 rounded"
               >
-                {size}
+                {sizeStock.size}
               </span>
             ))}
           </div>

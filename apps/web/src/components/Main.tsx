@@ -1,11 +1,15 @@
-import type { Product } from "@repo/db/data";
+import { Prisma } from "@prisma/client";
 import ProductList from "./Product/List";
+
+type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: { images: true; sizeStocks: true }
+}>;
 
 export function Main({
   products,
   className,
 }: {
-  products: Product[];
+  products: ProductWithRelations[];
   className?: string;
 }) {
   return (
