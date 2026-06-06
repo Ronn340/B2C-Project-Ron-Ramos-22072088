@@ -10,33 +10,33 @@ type CartItem = Prisma.CartItemGetPayload<{
 export function CartListItem({ item }: { item: CartItem }) {
     const router = useRouter();
 
-    async function addToCart(productId: number, action: String) {
+    async function addToCart(sizeStockId: number, action: String) {
         const res = await fetch("/api/cart",
             {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ productId, action })
+                body: JSON.stringify({ sizeStockId, action })
             });
         if (!res.ok) {
-            alert("Failed to update cart");
+            alert("Failed to update: " + (await res.json()).message);
         } else {
             router.refresh();
         }
     }
 
-    async function removeFromCart(productId: number) {
+    async function removeFromCart(sizeStockId: number) {
         const res = await fetch("/api/cart",
             {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ productId })
+                body: JSON.stringify({ sizeStockId })
             });
         if (!res.ok) {
-            alert("Failed to remove item from cart");
+            alert("Failed to remove: " + (await res.json()).message);
         } else {
             router.refresh();
         }
@@ -68,13 +68,13 @@ export function CartListItem({ item }: { item: CartItem }) {
                     <button
                         disabled={item.quantity >= 10}
                         className={`${item.quantity >= 10 ? "w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
-                        onClick={async () => await addToCart(item.product.id, "add")}
+                        onClick={async () => await addToCart(item.sizeStock.id, "add")}
                         data-test-id="quantity-increment">
                         +
                     </button>
                 </div>
                 <button className="flex text-sm text-wsu mt-1 hover:underline w-fit"
-                    onClick={async () => await removeFromCart(item.product.id)}>
+                    onClick={async () => await removeFromCart(item.sizeStock.id)}>
                     Remove
                 </button>
                 <span className="text-sm font-semibold text-primary" data-test-id="subtotal">
