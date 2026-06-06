@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ urlId: string
     const { urlId } = await params;
     const product = await client.db.product.findUnique({
         where: { urlId },
-        include: { images: true },
+        include: { images: true, sizeStocks: true },
     });
 
     if (!product) {

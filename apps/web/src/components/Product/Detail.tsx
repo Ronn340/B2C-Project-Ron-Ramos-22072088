@@ -1,6 +1,10 @@
 "use client";
-import { Product } from "@repo/db/data";
+import { Prisma } from "@prisma/client";
 import { useState } from "react";
+
+type Product = Prisma.ProductGetPayload<{
+  include: { images: true; sizeStocks: true }
+}>;
 
 export function ProductDetail({ product }: { product: Product }) {
 
@@ -9,7 +13,6 @@ export function ProductDetail({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
-  const sizes = product.sizes.split(",");
 
   //Add to cart API call
   async function addToCart(productId: number) {
@@ -64,14 +67,14 @@ export function ProductDetail({ product }: { product: Product }) {
       <h1 className="text-2xl font-bold text-primary">{product.name}</h1>
       <p className="text-xl font-semibold text-primary">{product.price.toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</p>
       <div className="flex flex-row gap-2 items-center">
-        {sizes.map((size) => (
+        {product.sizeStocks.map((sizeStock) => (
           <button
-            key={size}
-            onClick={() => setSelectedSize(size)}
-            data-test-id={`size-button-${size}`}
-            className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
+            key={sizeStock.size}
+            onClick={() => setSelectedSize(sizeStock.size)}
+            data-test-id={`size-button-${sizeStock.size}`}
+            className={`px-4 py-2 border rounded-md ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
           >
-            {size}
+            {sizeStock.size}
           </button>
         ))}
       </div>
