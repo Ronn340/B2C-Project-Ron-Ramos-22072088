@@ -51,16 +51,18 @@ export async function seed() {
   }
 
   // Create size stocks - separation for stock management
-  await client.db.sizeStock.createMany({
-    data: [
-      { productId: 1, size: "XS", stock: 35 },
-      { productId: 1, size: "S", stock: 30 },
-      { productId: 1, size: "M", stock: 25 },
-      { productId: 1, size: "L", stock: 20 },
-      { productId: 1, size: "XL", stock: 15 },
-    ]
-  });
 
+  for (let i = 1; i <= products.length; i++) {
+    await client.db.sizeStock.createMany({
+      data: [
+        { productId: i, size: "XS", stock: 35 },
+        { productId: i, size: "S", stock: 30 },
+        { productId: i, size: "M", stock: 25 },
+        { productId: i, size: "L", stock: 20 },
+        { productId: i, size: "XL", stock: 15 },
+      ]
+    }); 
+  }
   // Create a user and session for testing
   await client.db.user.create({
     data: {
