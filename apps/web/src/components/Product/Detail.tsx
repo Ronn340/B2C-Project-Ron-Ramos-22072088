@@ -10,29 +10,27 @@ export function ProductDetail({ product }: { product: Product }) {
 
   //Client side interactives
   const [selectedSize, setSelectedSize] = useState("");
+  const [sizeStockId, setSizeStockId] = useState<number | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
 
   //Add to cart API call
-  async function addToCart(productId: number) {
+  async function addToCart() {
     setLoading(true);
     const res = await fetch("/api/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ productId, quantity })
+      body: JSON.stringify({ sizeStockId, quantity })
     });
 
     if (res.ok) {
       alert("Product added to cart!");
-    } else if (res.status === 401) {
-      alert("Please log in to add items to your cart.");
-    } else if (res.status === 400) {
-      alert("Quantity exceeds maximum limit.");
     } else {
-      alert("Failed to add product to cart. Please try again.");
+      const data = await res.json();
+      alert(`Failed to add to cart: ${data.message}`);
     }
     setLoading(false);
   }
@@ -71,7 +69,10 @@ export function ProductDetail({ product }: { product: Product }) {
           <button
             disabled={sizeStock.stock === 0}
             key={sizeStock.size}
-            onClick={() => setSelectedSize(sizeStock.size)}
+            onClick={() => {
+              setSelectedSize(sizeStock.size);
+              setSizeStockId(sizeStock.id);
+            }}
             data-test-id={`size-button-${sizeStock.size}`}
             className={`relative px-4 py-2 border rounded-md ${sizeStock.stock === 0 ? "cursor-not-allowed" : ""} ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
           >
@@ -107,7 +108,7 @@ export function ProductDetail({ product }: { product: Product }) {
             'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
           onClick={async () => {
             if (selectedSize && product.stock > 0) {
-              await addToCart(product.id);
+              await addToCart();
             }
           }}
         >

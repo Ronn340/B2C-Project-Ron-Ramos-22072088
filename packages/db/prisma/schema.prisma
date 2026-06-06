@@ -26,6 +26,7 @@ model Product {
   createdAt   DateTime       @default(now())
   images      ProductImage[] //1-Product -> x_amount-images (images stored in another table)
   orderItems  OrderItem[] //1-Product -> x_amount-orderItems (products can be in multiple orders)
+  cartItems   CartItem[]  //1-Product -> x_amount-cartItems (products can be in multiple carts)
   sizeStocks  SizeStock[] //1-Product -> x_amount-sizeStocks (products can have multiple sizes with different stocks)
 }
 
@@ -105,11 +106,13 @@ model Cart {
 model CartItem {
   id          String   @id @default(cuid())
   cartId      String
+  productId   Int
   sizeStockId Int
   quantity    Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   sizeStock SizeStock @relation(fields: [sizeStockId], references: [id], onDelete: Cascade)
   cart      Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
