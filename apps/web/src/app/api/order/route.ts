@@ -71,6 +71,12 @@ export async function POST(req: NextRequest) {
             data: { stock: { decrement: item.quantity } }
         })
     }
+    for (const item of cart.items) {
+        await client.db.product.update({
+            where: { id: item.productId },
+            data: { stock: { decrement: item.quantity } }
+        })
+    }
 
     return Response.json({ order })
 }
