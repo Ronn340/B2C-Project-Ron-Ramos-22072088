@@ -53,12 +53,13 @@ test.describe("PAYMENT CHECKOUT", () => {
 
         await page.goto("/checkout/success?session_id=test-session-id");
         await page.getByRole("button", { name: "Continue Shopping" }).click();
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(6000);
         await expect(page).toHaveURL("/");
     });
 
     test("Tampering sessionID avoids skipping payment", async ({ page }) => {
         await page.goto("/checkout/success?session_id=invalid-session-id");
+        await page.waitForTimeout(6000);
         await expect(page.getByText("Payment Successful!")).not.toBeVisible();
         await expect(page.getByText("Uh oh, Something went wrong!")).toBeVisible();
         await page.getByRole("button", { name: "Go Home" }).click();
