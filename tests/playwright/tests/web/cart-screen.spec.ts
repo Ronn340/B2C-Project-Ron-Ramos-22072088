@@ -62,7 +62,7 @@ test.describe("CART SCREEN", () => {
     test.describe("Update Cart Item Quantity", () => {
         test.beforeEach(async ({ request }) => {
             await request.post("/api/cart", {
-                data: { sizeStockId: 2, quantity: 2 },
+                data: { sizeStockId: 5, quantity: 2 },
                 headers: { "Content-Type": "application/json" }
             });
         });
