@@ -9,8 +9,10 @@ type CartItem = Prisma.CartItemGetPayload<{
 //"-" and "+" button operations to API
 export function CartListItem({ item }: { item: CartItem }) {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     async function addToCart(sizeStockId: number, action: String) {
+        setLoading(true);
         const res = await fetch("/api/cart",
             {
                 method: "PATCH",
@@ -23,6 +25,7 @@ export function CartListItem({ item }: { item: CartItem }) {
             alert("Failed to update: " + (await res.json()).message);
         } else {
             router.refresh();
+            setTimeout(() => setLoading(false), 2000);
         }
     }
 
@@ -60,11 +63,13 @@ export function CartListItem({ item }: { item: CartItem }) {
 
                         disabled={item.quantity <= 1}
                         className={`${item.quantity <= 1 ? " w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}
-                        onClick={async () => await addToCart(item.product.id, "subtract")}
+                        onClick={async () => await addToCart(item.sizeStock.id, "subtract")}
                         data-test-id="quantity-decrement">
                         -
                     </button>
-                    <span data-test-id="quantity">{item.quantity}</span>
+                    <span data-test-id="quantity">
+                        {loading ? "Loading..." : item.quantity}
+                    </span>
                     <button
                         disabled={item.quantity >= 10}
                         className={`${item.quantity >= 10 ? "w-8 h-8 flex items-center justify-center bg-gray-300 rounded-lg cursor-not-allowed text-gray-500 hover:disabled:bg-gray-300" : "w-8 h-8 flex items-center justify-center hover:bg-wsu rounded-lg"}`}

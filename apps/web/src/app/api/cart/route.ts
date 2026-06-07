@@ -69,6 +69,14 @@ export async function PATCH(req: NextRequest) {
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
 
+    const sizeStock = await client.db.sizeStock.findUnique({
+        where: { id: sizeStockId }
+    });
+
+    if (!sizeStock) {
+        return NextResponse.json({ message: "Size stock not found" }, { status: 404 });
+    }
+
     //Find cart
     const cart = await client.db.cart.findUnique({ where: { userId } });
     if (!cart)
@@ -88,6 +96,9 @@ export async function PATCH(req: NextRequest) {
 
     //End at performing the update
     if (action === "add") {
+        if (cartItem.quantity + 1 > sizeStock.stock) {
+            return NextResponse.json({ message: "Quantity exceeds available stock" }, { status: 400 });
+        }
         await client.db.cartItem.update({
             where: { id: cartItem.id },
             data: { quantity: Math.min(cartItem.quantity + 1, 10) }
