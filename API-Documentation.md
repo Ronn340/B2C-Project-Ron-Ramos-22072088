@@ -51,14 +51,15 @@ Adding a cart record (if not created) and then add cartItem record (increment by
 **Request body:** 
 ```json
 {
-    "productId": 6,
+    "sizeStockId": 6,
     "quantity": 1
 }
 ```
 
 **Parameters:**
-- `productId` _number_ **required**
-The product's unique ID to be added to cart
+- `sizeStockId` _number_ **required**
+The sizeStock's unique ID to be added to cart
+Represents the specific product size
 - `quantity` _number_ **required**
 Number of units to add to cart
 
@@ -66,17 +67,35 @@ Number of units to add to cart
 
 - Status `200 OK`
 Item added successfuly
+- Status `400 Bad Request`
+Exceeds available stock or exceeds maximum limit of 10
 - Status `401 Unauthorized`
 User is not logged in
+- Status `404 Not Found`
+SizeStock record not found
+
 
 **200 Response:**
 ```json
 { "ok": true }
 ```
 
+**400 Response:**
+```json
+{ "message": "Quantity exceeds maximum limit"}
+```
+or
+```json
+{ "message": "Quantity exceeds available stock"}
+```
+
 **401 Response:**
 ```json
 { "message": "Not logged in" }
+```
+
+```json
+{ "message": "Size stock not found"}
 ```
 
 #### `PATCH /api/cart`
@@ -88,20 +107,23 @@ Updating a cart item record by increments or decrements of 1.
 **Request body:**
 ```json
 {
-    "productId": 6,
+    "sizeStockId": 6,
     "action": "add"
 }
 ```
 
 **Parameters:**
-- `productId` _number_ **required**
-The product's unique ID to update qty
+- `sizeStockId` _number_ **required**
+The sizeStock's unique ID to be added to cart
+Represents the specific product size
 - `action` _string_ **required**
 Type of update. must be _"add"_ or _"subtract"_
 
 **Responses**
 - Status `200 OK`
 Item added successfuly
+- Status `400 Bad Request`
+Quantity exceeds available stock - checked on "add" action only
 - Status `401 Unauthorized`
 User is not logged in
 - Status `404 Not Found`
@@ -112,12 +134,21 @@ Either Cart or CartItem was not found
 {"ok": true}
 ```
 
+**400 Response:** 
+```json
+{"message": "Quantity exceeds available stock"}
+```
+
 **401 Response:**
 ```json
 { "message": "Not logged in" }
 ```
 
 **404 Response:**
+```json
+{"message": "Size stock not found"}
+```
+or
 ```json
 {"message": "Cart not found"}
 ```
@@ -134,13 +165,13 @@ Deleting a cart item (1 item)
 **Request body:**
 ```json
 {
-    "productId": 6,
+    "sizeStockId": 6,
 }
 ```
 
 **Parameters:**
-- `productId` _number_ **required**
-The product's unique ID to delete completely
+- `sizeStockId` _number_ **required**
+The sizeStock's unique ID to delete completely from the cart
 
 **Responses:**
 - Status `200 OK`
@@ -182,25 +213,36 @@ Getting a stripe session URL for mock payment
         {"id": 1,
         "cartId": "collisionid-abc",
         "productId": 6,
+        "sizeStockId": 11,
         "quantity": 2,
         "product": {
             "id": 6,
             "name": "Long Black Coat",
             "price": 19.99,
-            "imageUrl":  "https://images.unsplash.com/..."
-            }
+            "imageUrl":  "https://images.unsplash.com/...",
+            "gender": "Women",
+            "colour": "Black"
+            },
+        "sizeStock": {
+            "id": 11,
+            "size": "M",
+            "stock": 4,
+            "productId": 6
+            },
         }
     ]
 }
 ```
 
 **Parameters:**
-- `cartItems` _cartItemWithProduct[]_ **required**
-This is an array of cartItems with prisma include: product
+- `cartItems` _cartItems[]_ **required**
+This is an array of cartItems with prisma {include: product: true, sizeStock: true }
 
 **Responses:**
 - Status `200 OK`
 The Stripe session is created and URL is returned
+- Status `401 Unauthorized`
+User is not logged in
 
 **200 Response:**
 ```json
@@ -209,15 +251,19 @@ The Stripe session is created and URL is returned
 }
 ```
 
+
 **NOTE:**
 - Success URL is set to `${process.env.NEXT_PUBLIC_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
 - Cancel URL is set back to `/cart`
 
+```json
+{ "message": "Not logged in" }
+```
 
 ### Order - `api/order`
 
 #### `POST /api/order`
-Adding the order to the purchase history record of the user after successfully paying via stripe payment. At the same time, clearing the cart inventory
+Adding the order to the purchase history record of the user after successfully paying via stripe payment. At the same time, clearing the cart inventory AND decrementing stock
 
 **Authenticated:** Required
 
@@ -237,13 +283,13 @@ The sessionId from the redirect URL
 
 **Responses:**
 - Status `200 OK`
+- Status `400 Bad Request`
+Payment incomplete OR invalid stripe sessionId OR session order already exists OR cart is empty
 Order successfuly saved to history
 - Status `401 Unauthorized`
 User is not logged in
 - Status `404 Not Found`
 Cart was not found
-- Status `400 Logic Error`
-Payment incomplete OR invalid stripe sessionId OR session order already exists OR cart is empty
 
 **Responses:**
 
@@ -261,6 +307,7 @@ Payment incomplete OR invalid stripe sessionId OR session order already exists O
             "id": "orderItemcuidcwx"
             "productId": 6,
             "quantity": 10,
+            "size": "M"
             "priceAtPurchase": 29.99,
             "name": "Tech Cargo Pants"
             }
@@ -325,7 +372,6 @@ model Product {
   name        String
   articleType String
   gender      String
-  sizes       String //Comma separated string
   rating      Float //Static number
   imageUrl    String
   description String
@@ -334,11 +380,25 @@ model Product {
   stock       Int            @default(0)
   active      Boolean        @default(true)
   createdAt   DateTime       @default(now())
-  images      ProductImage[] //1-Product -> x_amount-images (images stored in another table)
-  cartItems   CartItem[] //1-Product -> x_amount-cartItems (products can be in multiple carts)
-  orderItems  OrderItem[] //1-Product -> x_amount-orderItems (products can be in multiple orders)
+  images      ProductImage[]
+  cartItems   CartItem[] 
+  sizeStocks  SizeStock[]
+  orderItems  OrderItem[] 
 }
 ```
+
+### SizeStock
+```typescript
+model SizeStock 
+  id        Int        @id @default(autoincrement())
+  productId Int
+  size      String
+  stock     Int        @default(0)
+  cartItems CartItem[] 
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+```
+
 ### CartItem
 ```typescript
 model CartItem {
@@ -346,10 +406,12 @@ model CartItem {
   cartId    String
   productId Int
   quantity  Int      @default(1)
+  sizeStockId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sizeStock SizeStock @relation(fields: [sizeStockId], references: [id], onDelete: Cascade)
   cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   @@unique([cartId, productId]) //Ensures one entry per product in the cart
@@ -377,6 +439,7 @@ model OrderItem {
   id              String @id @default(cuid())
   orderId         String
   productId       Int
+  size String
   quantity        Int
   priceAtPurchase Float
   name            String

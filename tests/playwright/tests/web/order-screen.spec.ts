@@ -34,6 +34,7 @@ test.describe("ORDER SCREEN", () => {
                         {
                             productId: 1,
                             quantity: 1,
+                            size: "M",
                             priceAtPurchase: 29.90,
                             name: "Oversized Cotton T-Shirt"
                         }
@@ -45,15 +46,16 @@ test.describe("ORDER SCREEN", () => {
         await page.goto("/orders");
         await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
         await expect(page.getByText("x1")).toBeVisible();
+        await expect(page.getByText("Size: Women M")).toBeVisible();
         await expect(page.getByText("Total: $29.90")).toBeVisible();
     });
 
     test("Display correct total for orders with multiple items", async ({ page }) => {
         //Mock Order with multiple items
-        const order = await client.db.order.create({
+        await client.db.order.create({
             data: {
                 userId: "user-123",
-                totalAmount: 89.70,
+                totalAmount: 149.60,
                 stripeSessionId: "test-session-id-2",
                 items: {
                     create: [
@@ -61,15 +63,29 @@ test.describe("ORDER SCREEN", () => {
                             productId: 1,
                             quantity: 3,
                             priceAtPurchase: 29.90,
-                            name: "Oversized Cotton T-Shirt"
+                            name: "Black Long Coat",
+                            size: "XL"
+                        },
+                        {
+                            productId: 2,
+                            quantity: 1,
+                            priceAtPurchase: 59.90,
+                            name: "Cotton Sweater",
+                            size: "L"
+
                         }
                     ]
                 }
             }
         });
+
+
+
         await page.goto("/orders");
-        await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
-        await expect(page.getByText("x3")).toBeVisible();
-        await expect(page.getByText("Total: $89.70")).toBeVisible();
+        await expect(page.getByText("Black Long Coat x3")).toBeVisible();
+        await expect(page.getByText("Size: Women XL")).toBeVisible();
+        await expect(page.getByText("Cotton Sweater x1")).toBeVisible();
+        await expect(page.getByText("Size: Women L")).toBeVisible();
+        await expect(page.getByText("Total: $149.60")).toBeVisible();
     });
 });

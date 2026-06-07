@@ -1,5 +1,5 @@
 import { client } from "./client.js";
-import { products, productImages } from "./data.js";
+import { products, productImages, sizeStocks } from "./data.js";
 import { toUrlPath } from "@repo/utils/url";
 
 export async function seed() {
@@ -14,6 +14,7 @@ export async function seed() {
   await client.db.account.deleteMany();
   await client.db.user.deleteMany();
   await client.db.productImage.deleteMany();
+  await client.db.sizeStock.deleteMany();
   await client.db.product.deleteMany();
 
   //Create products - main table
@@ -25,7 +26,6 @@ export async function seed() {
         name: p.name,
         articleType: p.articleType,
         gender: p.gender,
-        sizes: p.sizes,
         rating: p.rating,
         imageUrl: p.imageUrl,
         description: p.description,
@@ -36,6 +36,18 @@ export async function seed() {
         createdAt: p.createdAt,
       }
     });
+  }
+   
+  // Create size stocks - separation for stock management
+  for (const s of sizeStocks) {
+    await client.db.sizeStock.create({
+      data: {
+        id: s.id,
+        productId: s.productId,
+        size: s.size,
+        stock: s.stock
+      }
+    })
   }
 
   //Create images - separation for image storage

@@ -25,7 +25,7 @@ export default async function CartPage() {
                        name: "asc" 
                     }
                 },
-                include: { product: true }
+                include: { product: true, sizeStock: true}
             }
         }
     });

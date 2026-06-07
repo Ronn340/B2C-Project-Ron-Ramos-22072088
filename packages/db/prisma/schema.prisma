@@ -16,7 +16,6 @@ model Product {
   name        String
   articleType String
   gender      String
-  sizes       String //Comma separated string
   rating      Float //Static number
   imageUrl    String
   description String
@@ -26,8 +25,19 @@ model Product {
   active      Boolean        @default(true)
   createdAt   DateTime       @default(now())
   images      ProductImage[] //1-Product -> x_amount-images (images stored in another table)
-  cartItems   CartItem[] //1-Product -> x_amount-cartItems (products can be in multiple carts)
   orderItems  OrderItem[] //1-Product -> x_amount-orderItems (products can be in multiple orders)
+  cartItems   CartItem[]  //1-Product -> x_amount-cartItems (products can be in multiple carts)
+  sizeStocks  SizeStock[] //1-Product -> x_amount-sizeStocks (products can have multiple sizes with different stocks)
+}
+
+model SizeStock {
+  id        Int        @id @default(autoincrement())
+  productId Int
+  size      String
+  stock     Int        @default(0)
+  cartItems CartItem[] 
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ProductImage {
@@ -94,17 +104,19 @@ model Cart {
 
 //Note to delete Cart knows to delete CartItems ->onDelete cascade
 model CartItem {
-  id        String   @id @default(cuid())
-  cartId    String
-  productId Int
-  quantity  Int      @default(1)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  cartId      String
+  productId   Int
+  sizeStockId Int
+  quantity    Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sizeStock SizeStock @relation(fields: [sizeStockId], references: [id], onDelete: Cascade)
+  cart      Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
-  @@unique([cartId, productId]) //Ensures one entry per product in the cart
+  @@unique([cartId, sizeStockId]) //Ensures one entry per size stock in the cart
 }
 
 //Purchase history schemas starting from here
@@ -113,7 +125,7 @@ model Order {
   userId          String
   totalAmount     Float
   status          String   @default("completed")
-  stripeSessionId String   @unique  //ENSURE one order per stripe session - stop from refreshing call duplicate
+  stripeSessionId String   @unique //ENSURE one order per stripe session - stop from refreshing call duplicate
   createdAt       DateTime @default(now())
 
   user  User        @relation(fields: [userId], references: [id])
@@ -124,6 +136,7 @@ model OrderItem {
   id              String @id @default(cuid())
   orderId         String
   productId       Int
+  size            String
   quantity        Int
   priceAtPurchase Float
   name            String

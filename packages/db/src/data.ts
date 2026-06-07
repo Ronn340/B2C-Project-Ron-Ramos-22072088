@@ -166,6 +166,70 @@ export const products: Product[] = [
     images: [],
   },
 ];
+export type SizeStock = {
+  id: number;
+  productId: number;
+  size: string;
+  stock: number;
+};
+
+export const sizeStocks: SizeStock[] = [
+  // Product 1 - Black Long Coat (34 total)
+  { id: 1, productId: 1, size: "S", stock: 12 },
+  { id: 2, productId: 1, size: "M", stock: 11 },
+  { id: 3, productId: 1, size: "L", stock: 11 },
+
+  // Product 2 - Cotton Sweater Gray (21 total)
+  { id: 4, productId: 2, size: "XS", stock: 5 },
+  { id: 5, productId: 2, size: "S", stock: 4 },
+  { id: 6, productId: 2, size: "M", stock: 4 },
+  { id: 7, productId: 2, size: "L", stock: 4 },
+  { id: 8, productId: 2, size: "XL", stock: 4 },
+
+  // Product 3 - Tech Cargo Pants (18 total)
+  { id: 9,  productId: 3, size: "XS", stock: 4 },
+  { id: 10, productId: 3, size: "S",  stock: 4 },
+  { id: 11, productId: 3, size: "M",  stock: 4 },
+  { id: 12, productId: 3, size: "L",  stock: 3 },
+  { id: 13, productId: 3, size: "XL", stock: 3 },
+
+  // Product 4 - Cotton Sweater Black (0 total — all 0)
+  { id: 14, productId: 4, size: "S",   stock: 0 },
+  { id: 15, productId: 4, size: "M",   stock: 0 },
+  { id: 16, productId: 4, size: "L",   stock: 0 },
+  { id: 17, productId: 4, size: "XL",  stock: 0 },
+  { id: 18, productId: 4, size: "XXL", stock: 0 },
+
+  // Product 5 - Oversized Merino Shirt (60 total)
+  { id: 19, productId: 5, size: "XS",  stock: 10 },
+  { id: 20, productId: 5, size: "S",   stock: 10 },
+  { id: 21, productId: 5, size: "M",   stock: 10 },
+  { id: 22, productId: 5, size: "L",   stock: 10 },
+  { id: 23, productId: 5, size: "XL",  stock: 10 },
+  { id: 24, productId: 5, size: "XXL", stock: 10 },
+
+  // Product 6 - Pleated Pants (45 total)
+  { id: 25, productId: 6, size: "28", stock: 9 },
+  { id: 26, productId: 6, size: "30", stock: 9 },
+  { id: 27, productId: 6, size: "32", stock: 9 },
+  { id: 28, productId: 6, size: "34", stock: 9 },
+  { id: 29, productId: 6, size: "36", stock: 9 },
+
+  // Product 7 - Cotton Hoodie (12 total)
+  { id: 30, productId: 7, size: "XS",  stock: 2 },
+  { id: 31, productId: 7, size: "S",   stock: 2 },
+  { id: 32, productId: 7, size: "M",   stock: 2 },
+  { id: 33, productId: 7, size: "L",   stock: 2 },
+  { id: 34, productId: 7, size: "XL",  stock: 2 },
+  { id: 35, productId: 7, size: "XXL", stock: 2 },
+
+  // Product 8 - Fleece Jacket (0 total — all 0)
+  { id: 36, productId: 8, size: "XS", stock: 0 },
+  { id: 37, productId: 8, size: "S",  stock: 0 },
+  { id: 38, productId: 8, size: "M",  stock: 0 },
+  { id: 39, productId: 8, size: "L",  stock: 0 },
+  { id: 40, productId: 8, size: "XL", stock: 0 },
+];
 
 export type ProductImage = {
   id: number;

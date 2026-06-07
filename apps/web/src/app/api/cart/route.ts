@@ -8,7 +8,15 @@ export async function POST(req: NextRequest) {
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
 
-    const { productId, quantity } = await req.json();
+    const { sizeStockId, quantity } = await req.json();
+
+    const sizeStock = await client.db.sizeStock.findUnique({
+        where: { id: sizeStockId }
+    });
+
+    if (!sizeStock) {
+        return NextResponse.json({ message: "Size stock not found" }, { status: 404 });
+    }
 
     const cart = await client.db.cart.upsert({
         where: { userId },
@@ -18,28 +26,32 @@ export async function POST(req: NextRequest) {
 
     const existingCartItem = await client.db.cartItem.findUnique({
         where: {
-            cartId_productId: {
+            cartId_sizeStockId: {
                 cartId: cart.id,
-                productId
+                sizeStockId
             }
         }
     });
 
-    if (existingCartItem?.quantity + quantity > 10) {
+    const totalQuantity = (existingCartItem?.quantity ?? 0) + quantity;
+    if (totalQuantity > sizeStock.stock) {
+        return NextResponse.json({ message: "Quantity exceeds available stock" }, { status: 400 });
+    }
+    if (totalQuantity > 10) {
         return NextResponse.json({ message: "Quantity exceeds maximum limit" }, { status: 400 });
     }
-
-
+    
     await client.db.cartItem.upsert({
         where: {
-            cartId_productId: {
+            cartId_sizeStockId: {
                 cartId: cart.id,
-                productId
+                sizeStockId
             }
         },
         create: {                       //Create new cartItem
             cartId: cart.id,
-            productId: productId,
+            productId: sizeStock.productId,
+            sizeStockId: sizeStockId,
             quantity: quantity
         },
         update: {
@@ -51,11 +63,19 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     const userId = await getCurrentUserId();
-    const { action, productId } = await req.json();
+    const { action, sizeStockId } = await req.json();
 
     //Find user
     if (!userId)
         return NextResponse.json({ message: "Not logged in" }, { status: 401 });
+
+    const sizeStock = await client.db.sizeStock.findUnique({
+        where: { id: sizeStockId }
+    });
+
+    if (!sizeStock) {
+        return NextResponse.json({ message: "Size stock not found" }, { status: 404 });
+    }
 
     //Find cart
     const cart = await client.db.cart.findUnique({ where: { userId } });
@@ -65,9 +85,9 @@ export async function PATCH(req: NextRequest) {
     //Find editable item
     const cartItem = await client.db.cartItem.findUnique({
         where: {
-            cartId_productId: {
+            cartId_sizeStockId: {
                 cartId: cart.id,
-                productId
+                sizeStockId
             }
         }
     });
@@ -76,6 +96,9 @@ export async function PATCH(req: NextRequest) {
 
     //End at performing the update
     if (action === "add") {
+        if (cartItem.quantity + 1 > sizeStock.stock) {
+            return NextResponse.json({ message: "Quantity exceeds available stock" }, { status: 400 });
+        }
         await client.db.cartItem.update({
             where: { id: cartItem.id },
             data: { quantity: Math.min(cartItem.quantity + 1, 10) }
@@ -92,7 +115,7 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     const userId = await getCurrentUserId();
-    const { productId } = await req.json();
+    const { sizeStockId } = await req.json();
 
     //Find user
     if (!userId)
@@ -106,9 +129,9 @@ export async function DELETE(req: NextRequest) {
     //Find editable item
     const cartItem = await client.db.cartItem.findUnique({
         where: {
-            cartId_productId: {
+            cartId_sizeStockId: {
                 cartId: cart.id,
-                productId
+                sizeStockId
             }
         }
     });

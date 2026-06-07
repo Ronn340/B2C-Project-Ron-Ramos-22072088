@@ -42,3 +42,4 @@ yarn-error.log*
 *storybook.log
 
 __screenshots__
+packages/db/prisma/schema.prisma

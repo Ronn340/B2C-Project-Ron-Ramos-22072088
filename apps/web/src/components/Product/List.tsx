@@ -1,7 +1,11 @@
-import type { Product } from "@repo/db/data";
+import { Prisma } from "@prisma/client";
 import { ProductListItem } from "./ListItem";
 
-export function ProductList({ products }: { products: Product[] }) {
+type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: { images: true; sizeStocks: true }
+}>;
+
+export function ProductList({ products }: { products: ProductWithRelations[] }) {
   if (products.length === 0) {
     return <div className="flex items-center justify-center px-5 py-5 ">
                 <span className="text-xl font-bold text-primary p-3 border-y border-wsu">No items found</span>

@@ -1,35 +1,36 @@
 "use client";
-import { Product } from "@repo/db/data";
+import { Prisma } from "@prisma/client";
 import { useState } from "react";
+
+type Product = Prisma.ProductGetPayload<{
+  include: { images: true; sizeStocks: true }
+}>;
 
 export function ProductDetail({ product }: { product: Product }) {
 
   //Client side interactives
   const [selectedSize, setSelectedSize] = useState("");
+  const [sizeStockId, setSizeStockId] = useState<number | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
-  const sizes = product.sizes.split(",");
 
   //Add to cart API call
-  async function addToCart(productId: number) {
+  async function addToCart() {
     setLoading(true);
     const res = await fetch("/api/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ productId, quantity })
+      body: JSON.stringify({ sizeStockId, quantity })
     });
 
     if (res.ok) {
       alert("Product added to cart!");
-    } else if (res.status === 401) {
-      alert("Please log in to add items to your cart.");
-    } else if (res.status === 400) {
-      alert("Quantity exceeds maximum limit.");
     } else {
-      alert("Failed to add product to cart. Please try again.");
+      const data = await res.json();
+      alert(`Failed to add to cart: ${data.message}`);
     }
     setLoading(false);
   }
@@ -64,14 +65,27 @@ export function ProductDetail({ product }: { product: Product }) {
       <h1 className="text-2xl font-bold text-primary">{product.name}</h1>
       <p className="text-xl font-semibold text-primary">{product.price.toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</p>
       <div className="flex flex-row gap-2 items-center">
-        {sizes.map((size) => (
+        {product.sizeStocks.map((sizeStock) => (
           <button
-            key={size}
-            onClick={() => setSelectedSize(size)}
-            data-test-id={`size-button-${size}`}
-            className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
+            disabled={sizeStock.stock === 0}
+            key={sizeStock.size}
+            onClick={() => {
+              setSelectedSize(sizeStock.size);
+              setSizeStockId(sizeStock.id);
+              setQuantity(1);
+            }}
+            data-test-id={`size-button-${sizeStock.size}`}
+            className={`relative px-4 py-2 border rounded-md ${sizeStock.stock === 0 ? "cursor-not-allowed" : ""} ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
           >
-            {size}
+            {sizeStock.stock === 0 && (
+              <div className="absolute inset-0 overflow-hidden rounded-md">
+                <div className="absolute w-[140%] h-[1px] bg-primary top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45" />
+              </div>
+            )}
+            <span className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {sizeStock.stock}
+            </span>
+            {sizeStock.size}
           </button>
         ))}
       </div>
@@ -98,7 +112,7 @@ export function ProductDetail({ product }: { product: Product }) {
             'bg-wsu text-primary py-2 px-4 rounded-full hover:bg-secondary hover:text-primary'}`}
           onClick={async () => {
             if (selectedSize && product.stock > 0) {
-              await addToCart(product.id);
+              await addToCart();
             }
           }}
         >

@@ -27,7 +27,7 @@ export default async function Page({ searchParams }: {
             sort === "Name Descending" ? { name: "desc" }:
             undefined,
         include: {
-            images: true
+            images: true, sizeStocks: true
         }
     })
 
