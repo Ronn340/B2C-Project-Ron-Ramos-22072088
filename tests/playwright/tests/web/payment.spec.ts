@@ -9,7 +9,7 @@ test.describe("PAYMENT CHECKOUT", () => {
     test("Proceed to checkout redirects to Stripe given URL", async ({ page, request }) => {
         //First add an item via cart api POST add-to-cart call
         await request.post("/api/cart", {
-            data: { productId: 3, quantity: 1 },
+            data: { sizeStockId: 9, quantity: 1 },
             headers: { "Content-Type": "application/json" }
         });
 
