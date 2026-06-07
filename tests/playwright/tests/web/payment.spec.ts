@@ -33,11 +33,12 @@ test.describe("PAYMENT CHECKOUT", () => {
             await route.fulfill({
                 status: 200,
                 contentType: "application/json",
-                body: JSON.stringify({ order: { id: "test-session-id" } })
+                body: JSON.stringify({ order: { id: "abcdefg-order-cuid" } })
             });
         });
         await page.goto("/checkout/success?session_id=test-session-id");
         await expect(page.getByText("Payment Successful!")).toBeVisible();
+        await expect(page.getByText("Order no: abcdefg-order-cuid")).toBeVisible();
         await expect(page.getByRole("button", { name: "Continue Shopping" })).toBeVisible();
     });
 
@@ -47,7 +48,7 @@ test.describe("PAYMENT CHECKOUT", () => {
             await route.fulfill({
                 status: 200,
                 contentType: "application/json",
-                body: JSON.stringify({ order: { id: "test-session-id" } })
+                body: JSON.stringify({ order: { id: "abcdefg-order-cuid" } })
             });
         });
 
@@ -58,6 +59,7 @@ test.describe("PAYMENT CHECKOUT", () => {
     });
 
     test("Tampering sessionID avoids skipping payment", async ({ page }) => {
+        //Skipping route.fulfil means that we ACTUALLY check the sessionId against stripe's API - definitely fails
         await page.goto("/checkout/success?session_id=invalid-session-id");
         await page.waitForTimeout(6000);
         await expect(page.getByText("Payment Successful!")).not.toBeVisible();
