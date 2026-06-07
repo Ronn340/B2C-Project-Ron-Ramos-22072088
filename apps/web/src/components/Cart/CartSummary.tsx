@@ -12,7 +12,7 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
 
     const handleCheckout = async () => {
         setLoading(true);
-        const response = await fetch("/api/checkout", {
+        const res = await fetch("/api/checkout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -20,13 +20,17 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
             body: JSON.stringify({ cartItems: items })
         });
 
-        const { url } = await response.json();
-        window.location.href = url;
+        if (!res.ok) {
+            alert("Failed to create checkout session: " + (await res.json()).message);
+            setLoading(false);
+            return;
+        } else {
+            const { url } = await res.json();
+            window.location.href = url;
+        }
 
-        // await stripe?.redirectToCheckout({ sessionId: id });
-        // DEPRECIATED or got removed or something
     }
-    
+
     return (
         <div className="border-t pt-4 mt-4 bg-secondary rounded-lg p-4">
             <h2 className="text-lg font-semibold text-textSecondary">Order Summary</h2>
@@ -41,8 +45,8 @@ export function CartSummary({ items }: { items: CartItemWithProduct[] }) {
             <div>
                 <span className="text-xs text-textSecondary">Shipping to be calculated at checkout.</span>
             </div>
-            <button 
-                className={`${ loading ? "w-full mt-15 bg-gray-300 text-black py-2 rounded-full" : "w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors" }`}
+            <button
+                className={`${loading ? "w-full mt-15 bg-gray-300 text-black py-2 rounded-full" : "w-full mt-15 bg-wsu text-black py-2 rounded-full hover:bg-textSecondary transition-colors"}`}
                 onClick={handleCheckout}
             >
                 {loading ? "Redirecting..." : "Proceed to Checkout"}
