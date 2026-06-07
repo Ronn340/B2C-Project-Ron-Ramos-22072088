@@ -29,6 +29,7 @@ export function OrderCard({ order }: { order: OrderWithItemProduct }) {
                 {order.items.map(item => (
                     <div key={item.id} className="flex flex-col mt-2">
                         <span className="text-base text-primary"> {item.name} x{item.quantity}</span>
+                        <span className="text-sm text-primary">Size: {item.product.gender} {item.size}</span>
                         <span className="text-primary"> ${item.priceAtPurchase.toFixed(2)}</span>
                     </div>
                 ))}

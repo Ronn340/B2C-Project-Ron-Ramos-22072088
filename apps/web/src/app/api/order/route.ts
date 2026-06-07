@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     //Total amount saved into history
     const cart = await client.db.cart.findUnique({
         where: { userId },
-        include: { items: { include: { product: true } } }
+        include: { items: { include: { product: true, sizeStock: true } } }
     });
 
     if (!cart) {
@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
             items: {
                 create: cart.items.map(item => ({
                     productId: item.productId,
+                    size: item.sizeStock.size,
                     quantity: item.quantity,
                     priceAtPurchase: item.product.price,
                     name: item.product.name
@@ -64,6 +65,12 @@ export async function POST(req: NextRequest) {
     //Delete the cart (FK relationhips first - item->cart)
     await client.db.cartItem.deleteMany({ where: { cartId: cart.id } });
     await client.db.cart.delete({ where: { id: cart.id } });
+    for (const item of cart.items) {
+        await client.db.sizeStock.update({
+            where: { id: item.sizeStockId },
+            data: { stock: { decrement: item.quantity } }
+        })
+    }
 
     return Response.json({ order })
 }
