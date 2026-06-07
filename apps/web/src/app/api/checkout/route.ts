@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server"
 import { Product, Prisma } from "@prisma/client";
+import { getCurrentUserId } from "@/utils/auth";
 import Stripe from "stripe";
 
 /* Logic for future reference:
@@ -18,6 +19,10 @@ type CartItem = Prisma.CartItemGetPayload<{
 }>;
 
 export async function POST(req: NextRequest) {
+    const userId = await getCurrentUserId();
+    if (!userId)
+        return Response.json({ message: "Not logged in" }, { status: 401 });
+
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
     const { cartItems } = await req.json();
     //body should be cartItemsWithProduct[] - CartItem->Apppended_Product
