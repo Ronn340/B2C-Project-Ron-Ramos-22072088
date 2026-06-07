@@ -72,6 +72,7 @@ export function ProductDetail({ product }: { product: Product }) {
             onClick={() => {
               setSelectedSize(sizeStock.size);
               setSizeStockId(sizeStock.id);
+              setQuantity(1);
             }}
             data-test-id={`size-button-${sizeStock.size}`}
             className={`relative px-4 py-2 border rounded-md ${sizeStock.stock === 0 ? "cursor-not-allowed" : ""} ${selectedSize === sizeStock.size ? "bg-primary text-secondary" : "bg-background text-primary border-primary"}`}
@@ -81,6 +82,9 @@ export function ProductDetail({ product }: { product: Product }) {
                 <div className="absolute w-[140%] h-[1px] bg-primary top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45" />
               </div>
             )}
+            <span className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {sizeStock.stock}
+            </span>
             {sizeStock.size}
           </button>
         ))}

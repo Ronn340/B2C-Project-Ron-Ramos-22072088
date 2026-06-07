@@ -34,6 +34,7 @@ test.describe("ORDER SCREEN", () => {
                         {
                             productId: 1,
                             quantity: 1,
+                            size: "M",
                             priceAtPurchase: 29.90,
                             name: "Oversized Cotton T-Shirt"
                         }
@@ -45,6 +46,7 @@ test.describe("ORDER SCREEN", () => {
         await page.goto("/orders");
         await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
         await expect(page.getByText("x1")).toBeVisible();
+        await expect(page.getByText("Size: M")).toBeVisible();
         await expect(page.getByText("Total: $29.90")).toBeVisible();
     });
 
@@ -61,7 +63,8 @@ test.describe("ORDER SCREEN", () => {
                             productId: 1,
                             quantity: 3,
                             priceAtPurchase: 29.90,
-                            name: "Oversized Cotton T-Shirt"
+                            name: "Oversized Cotton T-Shirt",
+                            size: "XL"
                         }
                     ]
                 }
@@ -70,6 +73,7 @@ test.describe("ORDER SCREEN", () => {
         await page.goto("/orders");
         await expect(page.getByText("Oversized Cotton T-Shirt")).toBeVisible();
         await expect(page.getByText("x3")).toBeVisible();
+        await expect(page.getByText("Size: XL")).toBeVisible();
         await expect(page.getByText("Total: $89.70")).toBeVisible();
     });
 });
